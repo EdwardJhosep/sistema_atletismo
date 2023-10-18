@@ -59,23 +59,37 @@
 <body>
   <nav class="navbar navbar-default">
     <div class="container-fluid">
-      <!-- Collect the nav links, forms, and other content for toggling -->
-      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        <ul class="nav navbar-nav navbar-right">
-          <li class="active"><a href="index.html">INICIO <span class="sr-only">(current)</span></a></li>
-          <li><a href="login.html">ADMIN</a></li>
-          <li><a href="login.html">INICIAR SESION</a></li>
-          <li><a href="torneo.html">TORNEO</a></li>
-          <li><a href="calendario.html">CALENDARIO</a></li>
-          <li><a href="atletas.html">ATLETAS</a></li>
-          <li><a href="rankings.html">RANKINGS</a></li>
-        </ul>
-        <a class="navbar-brand" href="#">
-          <img src="https://w7.pngwing.com/pngs/994/1013/png-transparent-international-association-of-athletics-federations-iaaf-world-championships-in-athletics-track-field-athlete-athletics-canada-infiniti-logo-text-sport-logo.png" alt="Logo Atletismo" style="width: 130px; height: 40px;">
-        </a>
-      </div>
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">
+                <img src="img/logo.jpg" alt="Logo de tu sitio" style="width: 255px; height: 40px; margin-right: 10px;">
+            </a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="active"><a href="index.html">INICIO <span class="sr-only">(current)</span></a></li>
+                <li><a href="login.html">ADMIN</a></li>
+                <li><a href="login.html">INICIAR SESION</a></li>
+                <li><a href="torneo.html">TORNEO</a></li>
+                <li><a href="calendario.html">CALENDARIO</a></li>
+                <li><a href="atletas.html">ATLETAS</a></li>
+                <li><a href="rankings.html">RANKINGS</a></li>
+            </ul>
+        </div>
     </div>
-  </nav>
+</nav>
+
+
+
+  <!-- Asegúrate de que esta línea esté antes del cierre del cuerpo (</body>) -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   
   
   
@@ -146,44 +160,47 @@
   });
 </script>
 
-    <div class="container">
-      <h1 class="EVENTOS">Eventos de Atletismo</h1>
-      <BR>
-        <BR>
+<div class="container">
+  <h1 class="EVENTOS">Eventos de Atletismo</h1>
+  <BR>
+  <BR>
       <div class="row">
         <div class="col-md-4">
-          <div class="panel panel-default">
+          <div class="panel panel-default text-center">
             <div class="panel-body">
               <h3>CAMPEONATO NACIONAL<img src="https://upload.wikimedia.org/wikipedia/en/e/e1/Federaci%C3%B3n_Deportiva_Peruana_de_Atletismo_Logo.jpg" alt="" class="img-responsive"></h3>
               <!-- Agrega aquí la información sobre el Salto Largo -->
             </div>
             <h4>FECHA. DE:   HASTA:</h4>
-
+            <a href="campeonato.html" class="btn btn-primary center-block">Saber Más</a>
           </div>
         </div>
     
         <div class="col-md-4">
-          <div class="panel panel-default">
+          <div class="panel panel-default text-center">
             <div class="panel-body">
-              <h3>TORNEO ADCA<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKoAAAC0CAMAAAAzdEdbAAABFFBMVEX///+FFycCAgP7+/38/Px9CRvW1tbt7e2KGCiRkZG3t7f39/dxcHGurq729vaCgoLm5ua7eIKuXmqSGiypVmEIAwRtEiDy5unPzs9cW1zAiZCRMD6IHCzIx8jNmqJ8fH4dHR6kpKSYmJh3BBJmZWYSEhNaPkI0NDRWVVYpKCl8GyppMTu9vb1aKjOdSlfUqrElBAcrBQtJSUnKf4rr2NzmzNGgRFLatLtDQ0QrKy0XFxlyAQm4dH7PoangwcfEdH9kSk20ho18Kzipc3yXYmuGUFl5QkwiFhiFbnFRMTh2XWGxZ3OWNUPHkJiJCh2/Z3Tls7rsxMvFs7aKaG58Vl2CjY6GPkiml5mWg4Z8P0iNOkdPOjzdmxmHAAAJaklEQVR4nO3da5fauB0GcBkLK9jGNoSJDba5GBOgS2HDmsvADNlkm22aYdrttml6+f7fo5LM1bDxZcOcP+fM8yKZmTDwO4okyxISCD3nOc95znOecx3BckPX9UZs9He1RFlhjC9EVfRmsry3E6WuKJeyKmouUW5evRCS5B0hmnIRKz5LXSwyU3+SJINcxIq1c9Si28xK/ZPsSob2ZNS5gcZZqR+8oisR5amoBYQKWak/654sGU9F7VoISbcZqd+phaJlaE9EVRHtbvysVF9/OmpzwKhyJzO19WTUKmJU1IVPvSkibtXhU+fEcNm10ViApxZQqyuxYh1Dp/YN4uc83rCgU33kdnK+Rq24D5u6kJRGLtdxWbE2YFN7SGKFqWOEkQSbWkQt9hcdsEQaFjhqVzPm/AuZUVuQqYVtu1cJtZIFXGpHIdXNVxbrA1S4VHXflDzasLAFlnojabsOijcsbQ6VSnuqfe1kXSv2oFJlXMx1Nsk16BULEaDULsJWcZeBQqmaD5PawsQgB2FTOi5IaodgdT7eZa7yGtCFSNXx0UU/l2OjVsWDSJVQZDyos5sBqQOPWtVI5Ca1SWsr2l6+IFEHyMtFItOGRfsvaNQuQf0odcz6AKkPjephNyrN5VgNwAVg1OZJo2JpsVGrtYBFpQOp6IQaTYNRcQMUtWqg0ylVNtJmtZXfGECh+ga7MPWi0rnBugBq9aFQ/d1VXz6cV/ek/XDAKPz5lZMojOqy1YCvJstiAdY+vnnz/S5vDvP9Yf7yrp4on26746qvxsQv0Hu31NTSiyTJl81kT9iI1qLz6UpK2jUjSk1UBRlVFKO/LZ4mKdUy0q4ZpaEqmqYpR9k8RwbqrWylXd9KQw1G97XS0YJqfTabBOZR8Sak9j3ZlUiq9a00VHM2K62XbZrlsi04tu3kl0tn+vC4MvfYhNRmw5OtdEtxaagsgc2+WZfqs9VkshrVKg61O+WRhtJRF2Gfdikqkyh3eUFol3a/b64ehLzQFh6CTZVNSO1UG95Auiy1HlK3/98IaaN1mxX0BKWi9i5OFUfHVIZdTQ+skKkiRqs1/WF+GiDoVGod8YeUWNuCTRWRctdmj1nBp4powqtAmSDwVBGXwmKFX6riprbWtCugBlP6c2FqXgFVe2DU/BVQRRRW1tk1UB95qdaVK6COHPawknYF1Ptn6sUqQO0aqHX+qPtr6AFqmysreCoSHzj1Ci4BKBjyCyu5AuqMtar8o3IF1LCqBvDHq5uh9YMJf7waFqozgX/DglZhTdVE6NSw+W8eAZmKUVBmUxZDE9qUxX10IgizyZW8UA7ATQSVjqfXtKDu5PN5u7SdCoRBZQmm7JvhaDUJTDOY8AnXvP2w2k2wwqCak8louKRlmG8v2856Ol07y6WwrpRWB9PWaajplrew9vZlkvz1byIyf/nlh7c/bPKWp17/e3D8hCd7H85n0VMLsmQQLSYHxY6VXz/+458/f/fHuLxWG6p/sh71+fPnyF6tQjFRvnx4/69hpVx++HrK/N1eWysmVlFXq72vp9qNLykePdn/plnJv3gRvxT68gvWdvu3MDHcYoGV2Nczv0lIjQxk9mtd2+/5H5SapIm8/EJoJdkuOmmGNGgV9LhUO/HMM1QqnMxqtdrjLNhoR6mo/7Ysat1WVmJYAzm2cqlZqAit7qY263jzjj2sMe2snIr6sShT664PIIYkWTGRCqcb22KpaFWxhfa0NguCyahkC/bdarW2U1E/FVq0+921K40QIy7ES01F5p0j5KcTorH6KmrmyBYcR3BSUX9s0D6N7Oo7xkpsUCstNZzHrJE9HZtl+urpqK9VticqWa+yTTEllUvDIew+uEKpCjBqKC0dS6lwKjgBLCoibAxrm+fubFegqFhk063tungSNBQmoKjhHawdnL4NgxYrqFLFIruDbe+G24fR1iNIVBTwaYHZufe2oFoNFHXG7gvtyTmqGECqAEhjyy35ykn7D4sVQaLy61T77lxV3XqhUCeM0S4pV0BdLRm1jn9TCoYq1tlkW3v024UKh/p4PdQrKtUrot5fDRWtOPUqOqsJm8Ru35EroPKrVX54ZgwIjkpKu1UM4FQ6smKOZR2fvV6x8QocKofsJroj0okJiIrRPYeszlBpRQ4wHCqVDPmI9bQPQGLlDlJd5Xd7rAo8Rt+Pj3BpbWJQVCzWBWpx6sdWhErCDNJdAEdpbNUo7xxesjDS7oQRrM4qxNRYuQrD+/3Kw2wqbAYGoKi0XO9tXrDT0mhiBsGsNhScGRYBUmljN2u8cbHdDmy/g1MLdv8Ggnr4S6J5X7b5a+adyr15sF3nklSjWGj443k3Lv8pH6dSGbLXXFcqRz/+cJO7SZJbPzUVa4ZVLKh+zPJWr/c+SWEJL14lXFvKQEWKIQ08vRG7Pe33UM8s4mSiEsOVW14hJvrvoM7dk42UmahsKc4ayHEp/jc7VT86k2ZHbblpqQpf34qLlZ3at5BxspLbz0Dl1vgYw8xUlb7IyWbqfjUDFYUbUGOiZaZ2ZISRG+29s1ETRclM7fGdrfNroHr8TQrRN2lApHYJP/KPNOFTG0ji5+hVwVObBlb1MwdUAqT6yLoZs+O+lC5wamfAGpR8ekAlPOoYS10+1sXI6ICm3rT45T88oLIHmtrHBj9Jg59IUgRN1dEgbFysYaEmYOqCbI74WpwcUAmN6u/OdyqwIZEEl3rj4u2lv8vO0cNzsNQ5MnbVk3WtuAiWKh/Y2ClqhwdUwqI2j4ZT7IDKg72QsKgeIvs3dDbYVeDgvCpQ1E4UQrsrrQuS6mOjehiJ9VctkFQpMpbiB1Ru+1lQ1LGmHA+mO+x2kPgAqTKOTqm0WA0YwKPSy1N0RmWusdO+bsFRvcih5Lz27s/RA0TtSCefoRCOWTbn6AGiqho+nVS9ZZsWiAqMaqHBmdlLbX/yKxiqR+/7z1D5IbVhbYVB7fR1tuOj0Y98hkJTDZ8K6/3Oxanxp869pFTf5dsRiKwfTv81fW+3F2HQaF6S+mDb9h/i8+qmM+7xg357vep8vzBEi7Ha254B3PP7WSbYEwa7v375+OnH13H5X+wCWJjxBama4bZ0tfqt4vMPy7kMlW/f0uOWtxKnobcG0sVKVRoU49e3ksZrya5B4l83C1UhhuTGr28lzcC1JHKJc0dRuH0rwfpW8uw33H1zarL1reTRtIt9ZN5mgesb5mLQb069oPQC+T9RbTMXqwlmkQAAAABJRU5ErkJggg==" alt="" class="img-responsive"></h3>
+              <h3>TORNEO ADCA<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStOe1k6W88bIAbNDsdrflBKJSj8iuGurOOHbaqv1DMTSPTjh8TSaF6KkZWO9wr4j4UngA&usqp=CAU" alt="" class="img-responsive"></h3>
               <!-- Agrega aquí la información sobre el Salto Triple -->
             </div>
             <h4>FECHA. DE:   HASTA:</h4>
-
+            <a href="torneo_adca.html" class="btn btn-primary center-block">Saber Más</a>
           </div>
         </div>
     
         <div class="col-md-4">
-          <div class="panel panel-default">
+          <div class="panel panel-default text-center">
             <div class="panel-body">
               <h3>TORNEO ADECORE<img src="https://elcomercio.pe/resizer/LInsU_cEeJsYuhghbokiJ5azap8=/1200x800/smart/filters:format(jpeg):quality(75)/cloudfront-us-east-1.images.arcpublishing.com/elcomercio/5I5EEXRNXVA45P7ZN3QPVM75X4.jpg" alt="" class="img-responsive"></h3>
               <!-- Agrega aquí la información sobre las Carreras -->
             </div>
             <h4>FECHA. DE:   HASTA:</h4>
+            <a href="torneo_adecore.html" class="btn btn-primary center-block">Saber Más</a>
           </div>
         </div>
       </div>
     </div>
+    
+
     <BR>
       <BR><BR><BR><BR><BR>
 <!-- Panel de Publicidad con imágenes -->
