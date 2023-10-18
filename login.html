@@ -6,7 +6,7 @@
 </head>
 <body>
     <div class="container">
-        <div id="login-form" class="fadeIn">
+        <div id="login-form" class="form">
             <h2 class="mb-4">Iniciar Sesión</h2>
             <form>
                 <div class="form-group">
@@ -22,7 +22,7 @@
             </form>
         </div>
 
-        <div id="register-form" class="fadeOut" style="display: none;">
+        <div id="register-form" class="form" style="display: none;">
             <h2 class="mb-4">Registro</h2>
             <form>
                 <div class="form-group">
@@ -34,7 +34,7 @@
                     <input type="password" class="form-control" id="newPassword" placeholder="Elige una contraseña">
                 </div>
                 <button type="submit" class="btn btn-success btn-block">Registrarse</button>
-                <button type="button" class="btn btn-primary btn-block mb-3" id="login-btn">Volver al Inicio de Sesión</button>
+                <button type="button" class="btn btn-primary btn-block" id="login-btn">Volver al Inicio de Sesión</button>
             </form>
         </div>
     </div>
@@ -48,6 +48,11 @@
             height: 100vh;
         }
         .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .form {
             background: #fff;
             border-radius: 8px;
             padding: 30px;
