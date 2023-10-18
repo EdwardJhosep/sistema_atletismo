@@ -57,33 +57,95 @@
 <title>ATLETISMO</title>
 </head>
 <body>
-    <nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">ATLETISMO</a>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li class="active"><a href="index.html">INICIO <span class="sr-only">(current)</span></a></li>
+          <li><a href="login.html">ADMIN</a></li>
+          <li><a href="login.html">INICIAR SESION</a></li>
+          <li><a href="torneo.html">TORNEO</a></li>
+          <li><a href="calendario.html">CALENDARIO</a></li>
+          <li><a href="atletas.html">ATLETAS</a></li>
+          <li><a href="rankings.html">RANKINGS</a></li>
+        </ul>
+        <a class="navbar-brand" href="#">
+          <img src="https://w7.pngwing.com/pngs/994/1013/png-transparent-international-association-of-athletics-federations-iaaf-world-championships-in-athletics-track-field-athlete-athletics-canada-infiniti-logo-text-sport-logo.png" alt="Logo Atletismo" style="width: 130px; height: 40px;">
+        </a>
+      </div>
     </div>
+  </nav>
+  
+  
+  
+    <!-- Agrega el siguiente código justo antes del cierre del cuerpo (</body>) -->
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="index.html">INICIO <span class="sr-only">(current)</span></a></li>
-        <li><a href="login.html">ADMIN</a></li>
-        <li><a href="login.html">INICIAR SESION</a></li>
-        <li><a href="torneo.html">TORNEO</a></li>
-        <li><a href="calendario.html">CALENDARIO</a></li>
-        <li><a href="atletas.html">ATLETAS</a></li>
-        <li><a href="rankings.html">RANKINGS</a></li>
-      </ul>
-    </div>
+<div class="container">
+  <h2>Buscar Atletas</h2>
+  <div class="input-group">
+    <input type="text" id="buscador" class="form-control" placeholder="Buscar atleta...">
+    <span class="input-group-btn">
+      <button class="btn btn-default" id="boton-buscar" type="button">Buscar</button>
+    </span>
   </div>
-    </nav>
+  <div id="resultados-busqueda"></div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Array de atletas (debes reemplazarlo con tus datos reales)
+    var atletas = [
+      { nombre: "Atleta 1", deporte: "Deporte 1" },
+      { nombre: "Atleta 2", deporte: "Deporte 2" },
+      { nombre: "Atleta 3", deporte: "Deporte 1" },
+      // Agrega más atletas con sus datos aquí
+    ];
+
+    // Función para mostrar los resultados de la búsqueda
+    function mostrarResultados(resultados) {
+      var resultadosContainer = document.getElementById("resultados-busqueda");
+      resultadosContainer.innerHTML = "";
+
+      if (resultados.length === 0) {
+        resultadosContainer.innerHTML = "No se encontraron resultados.";
+      } else {
+        var listaResultados = document.createElement("ul");
+        resultados.forEach(function(atleta) {
+          var item = document.createElement("li");
+          item.textContent = atleta.nombre + " - " + atleta.deporte;
+          listaResultados.appendChild(item);
+        });
+        resultadosContainer.appendChild(listaResultados);
+      }
+    }
+
+    // Función para buscar atletas
+    function buscarAtletas() {
+      var inputBuscador = document.getElementById("buscador");
+      var consulta = inputBuscador.value.toLowerCase();
+
+      var resultados = atletas.filter(function(atleta) {
+        return atleta.nombre.toLowerCase().includes(consulta) || atleta.deporte.toLowerCase().includes(consulta);
+      });
+
+      mostrarResultados(resultados);
+    }
+
+    // Agrega un controlador de eventos para el botón de búsqueda
+    var botonBuscar = document.getElementById("boton-buscar");
+    botonBuscar.addEventListener("click", buscarAtletas);
+
+    // Agrega un controlador de eventos para la entrada de texto (para buscar al presionar Enter)
+    var inputBuscador = document.getElementById("buscador");
+    inputBuscador.addEventListener("keyup", function(event) {
+      if (event.key === "Enter") {
+        buscarAtletas();
+      }
+    });
+  });
+</script>
+
     <div class="container">
       <h1 class="EVENTOS">Eventos de Atletismo</h1>
       <BR>
