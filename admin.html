@@ -6,10 +6,43 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+    <link rel="stylesheet" type="text/css" href="estilo.css">
 
     <style>
+        body {
+            background: #f2f2f2;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+        .form {
+            background: #fff;
+            border-radius: 8px;
+            padding: 28px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
 
+        .hidden {
+            display: none;
+        }
+
+        .fadeIn, .fadeOut {
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .fadeOut {
+            opacity: 0;
+        }
+
+        .btn-block {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -28,7 +61,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="index.html">INICIO <span class="sr-only">(current)</span></a></li>
-                    <li><a href="admin.html">ADMIN</a></li>
+                    <li><a href="login.html">ADMIN</a></li>
                     <li><a href="login.html">INICIAR SESION</a></li>
                     <li><a href="torneo.html">TORNEO</a></li>
                     <li><a href="calendario.html">CALENDARIO</a></li>
@@ -39,8 +72,7 @@
         </div>
     </nav>
 
-
-        <div id="login-form" class="form">
+    <div id="login-form" class="form">
             <h1>Iniciar Sesión</h1>
             <form action="procesar_login.php" method="post">
                 <label for="nombre_de_usuario">Nombre de Usuario:</label>
@@ -53,21 +85,6 @@
             </form>
         </div>
     </div>
-
-    
-    <div id="login-form" class="form">
-        <h1>Iniciar Sesión</h1>
-        <form action="procesar_login.php" method="post">
-            <label for="nombre_de_usuario">Nombre de Usuario:</label>
-            <input type="text" name="nombre_de_usuario" id="nombre_de_usuario" required><br><br>
-    
-            <label for="contrasena">Contraseña:</label>
-            <input type="password" name="contrasena" id="contrasena" required><br><br>
-    
-            <input type="submit" value="Iniciar Sesión">
-        </form>
-    </div>
-</div>
 
     <script>
         $(document).ready(function() {
