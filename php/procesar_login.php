@@ -18,30 +18,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST["nombre_de_usuario"];
     $password = $_POST["contrasena"];
 
-    // Debes cifrar la contraseña antes de compararla con la base de datos.
-    // Aquí, estamos utilizando texto plano con fines de demostración, pero en producción, utiliza una función segura de cifrado de contraseñas.
-    // $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    // Consulta para verificar si el nombre de usuario y la contraseña coinciden en la tabla "profesores"
+    $sqlProfesores = "SELECT * FROM profesores WHERE usuario = '$username' AND contrasena = '$password'";
+    $resultProfesores = $conn->query($sqlProfesores);
 
-    // Consulta para verificar si el nombre de usuario y la contraseña coinciden
-    $sql = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
+    // Consulta para verificar si el nombre de usuario y la contraseña coinciden en la tabla "arbitros"
+    $sqlArbitros = "SELECT * FROM arbitros WHERE usuario = '$username' AND contrasena = '$password'";
+    $resultArbitros = $conn->query($sqlArbitros);
 
-    $result = $conn->query($sql);
+        // Consulta para verificar si el nombre de usuario y la contraseña coinciden en la tabla "arbitros"
+        $sqlUsers = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
+        $sqlUsers = $conn->query($sqlUsers);
 
-    if ($result->num_rows == 1) {
-        // Inicio de sesión exitoso
-        $row = $result->fetch_assoc();
-        $tipo_de_usuario = $row["tipo_de_usuario"]; // Asume que hay un campo "tipo_de_usuario" en tu tabla
+    if ($resultProfesores->num_rows == 1) {
+        // Inicio de sesión exitoso para profesores
+        header("Location: ../usuarios/profesor.html");
+    } elseif ($resultArbitros->num_rows == 1) {
+        // Inicio de sesión exitoso para árbitros
+        header("Location: ../usuarios/arbitro.html");
 
-        if ($tipo_de_usuario == "profesor") {
-            // Redirige al área de profesores
-            header("Location: profesor.html");
-        } elseif ($tipo_de_usuario == "arbitro") {
-            // Redirige al área de árbitros
-            header("Location: arbitro.html");
-        } else {
-            // Redirige a una página predeterminada si es necesario
-            header("Location: inicio.html");
-        }
+    } elseif ($sqlUsers->num_rows == 1) {
+        // Inicio de sesión exitoso para árbitros
+        header("Location: ../usuarios/users.html");
     } else {
         // Inicio de sesión fallido
         echo "Inicio de sesión fallido. Por favor, verifica tu nombre de usuario y contraseña.";
