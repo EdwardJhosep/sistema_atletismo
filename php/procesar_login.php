@@ -29,7 +29,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($result->num_rows == 1) {
         // Inicio de sesión exitoso
-        echo "¡Inicio de sesión exitoso!";
+        $row = $result->fetch_assoc();
+        $tipo_de_usuario = $row["tipo_de_usuario"]; // Asume que hay un campo "tipo_de_usuario" en tu tabla
+
+        if ($tipo_de_usuario == "profesor") {
+            // Redirige al área de profesores
+            header("Location: profesor.html");
+        } elseif ($tipo_de_usuario == "arbitro") {
+            // Redirige al área de árbitros
+            header("Location: arbitro.html");
+        } else {
+            // Redirige a una página predeterminada si es necesario
+            header("Location: inicio.html");
+        }
     } else {
         // Inicio de sesión fallido
         echo "Inicio de sesión fallido. Por favor, verifica tu nombre de usuario y contraseña.";
