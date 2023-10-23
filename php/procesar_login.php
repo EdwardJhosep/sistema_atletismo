@@ -1,8 +1,11 @@
 <?php
-// Configuración de la base de datos
+// Configuración de la zona horaria
+date_default_timezone_set('America/Lima');
+
+// Resto del código
 $servername = "localhost";
-$username = "root";  // Tu nombre de usuario de MySQL
-$password = "";      // Tu contraseña de MySQL
+$username = "root";
+$password = "";
 $database = "atletismo";
 
 // Crear una conexión
@@ -26,19 +29,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sqlArbitros = "SELECT * FROM arbitros WHERE usuario = '$username' AND contrasena = '$password'";
     $resultArbitros = $conn->query($sqlArbitros);
 
-        // Consulta para verificar si el nombre de usuario y la contraseña coinciden en la tabla "arbitros"
-        $sqlUsers = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
-        $sqlUsers = $conn->query($sqlUsers);
+    // Consulta para verificar si el nombre de usuario y la contraseña coinciden en la tabla "users"
+    $sqlUsers = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
+    $resultUsers = $conn->query($sqlUsers);
 
     if ($resultProfesores->num_rows == 1) {
         // Inicio de sesión exitoso para profesores
         header("Location: ../usuarios/profesor.html");
     } elseif ($resultArbitros->num_rows == 1) {
-        // Inicio de sesión exitoso para árbitros
-        header("Location: ../usuarios/arbitro.html");
+        $rowArbitro = $resultArbitros->fetch_assoc();
+        $horaInicio = $rowArbitro["hora_inicio_personalizada"];
+        $horaCierre = $rowArbitro["hora_fin_personalizada"];
+        $horaActual = date("H:i:s");
 
-    } elseif ($sqlUsers->num_rows == 1) {
-        // Inicio de sesión exitoso para árbitros
+        if ($horaActual >= $horaInicio && $horaActual <= $horaCierre) {
+            // Inicio de sesión exitoso para árbitros dentro del rango de tiempo
+            header("Location: ../usuarios/arbitro.html");
+        } else {
+            // Fuera del rango de tiempo
+            echo "Acceso restringido en este momento. Las horas personalizadas son de $horaInicio a $horaCierre.";
+        }
+    } elseif ($resultUsers->num_rows == 1) {
+        // Inicio de sesión exitoso para usuarios
         header("Location: ../usuarios/users.html");
     } else {
         // Inicio de sesión fallido
