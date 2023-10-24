@@ -1,8 +1,7 @@
 <?php
-// Configuración de la zona horaria
+// Configuración de la zona horaria en Lima
 date_default_timezone_set('America/Lima');
 
-// Resto del código
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -35,15 +34,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($resultProfesores->num_rows == 1) {
         // Inicio de sesión exitoso para profesores
+        session_start();  // Iniciar la sesión
+
+        // Generar un token de sesión único
+        $token = bin2hex(random_bytes(32)); // Puedes ajustar la longitud del token
+
+        // Almacenar el token en una variable de sesión
+        $_SESSION['session_token'] = $token;
+
+        $_SESSION['loggedin'] = true;  // Establecer una variable de sesión
         header("Location: ../usuarios/profesor.html");
     } elseif ($resultArbitros->num_rows == 1) {
         $rowArbitro = $resultArbitros->fetch_assoc();
         $horaInicio = $rowArbitro["hora_inicio_personalizada"];
         $horaCierre = $rowArbitro["hora_fin_personalizada"];
-        $horaActual = date("H:i:s");
+        $horaActual = date("Y-m-d H:i:s"); // Formato "año-mes-día hora:minuto:segundo"
 
         if ($horaActual >= $horaInicio && $horaActual <= $horaCierre) {
             // Inicio de sesión exitoso para árbitros dentro del rango de tiempo
+            session_start();  // Iniciar la sesión
+
+            // Generar un token de sesión único
+            $token = bin2hex(random_bytes(32)); // Puedes ajustar la longitud del token
+
+            // Almacenar el token en una variable de sesión
+            $_SESSION['session_token'] = $token;
+
+            $_SESSION['loggedin'] = true;  // Establecer una variable de sesión
             header("Location: ../usuarios/arbitro.html");
         } else {
             // Fuera del rango de tiempo
@@ -51,7 +68,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     } elseif ($resultUsers->num_rows == 1) {
         // Inicio de sesión exitoso para usuarios
-        header("Location: ../usuarios/users.html");
+        session_start();  // Iniciar la sesión
+
+        // Generar un token de sesión único
+        $token = bin2hex(random_bytes(32)); // Puedes ajustar la longitud del token
+
+        // Almacenar el token en una variable de sesión
+        $_SESSION['session_token'] = $token;
+
+        $_SESSION['loggedin'] = true;  // Establecer una variable de sesión
+        header("Location: ../usuarios/users.php");
     } else {
         // Inicio de sesión fallido
         echo "Inicio de sesión fallido. Por favor, verifica tu nombre de usuario y contraseña.";
