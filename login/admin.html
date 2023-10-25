@@ -64,7 +64,8 @@
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="../index.html">INICIO <span class="sr-only">(current)</span></a></li>
                     <li><a href="admin.html">ADMIN</a></li>
-                    <li><a href="login.html">INICIAR SESION</a></li>
+                    <li><a href="login.html">INICIAR encargado</a></li>
+                    <li><a href="login2.html">INICIAR profesor</a></li>
                     <li><a href="../menu/torneo.html">TORNEO</a></li>
                     <li><a href="../menu/calendario.html">CALENDARIO</a></li>
                     <li><a href="../menu/atletas.html">ATLETAS</a></li>
@@ -74,20 +75,17 @@
         </div>
     </nav>
 
-    <div id="login-form" class="form">
-            <h1>Iniciar Sesión</h1>
-            <form action="../php/procesar_login.php" method="post">
-                <label for="nombre_de_usuario">Nombre de Usuario:</label>
-                <input type="text" name="nombre_de_usuario" id="nombre_de_usuario" required><br><br>
+    <h2>Iniciar Sesión</h2>
+    <form action="../php/login1.php" method="post">
+        <label for="username">Usuario:</label>
+        <input type="text" name="username" id="username" required><br><br>
         
-                <label for="contrasena">Contraseña:</label>
-                <input type="password" name="contrasena" id="contrasena" required><br><br>
-        
-                <input type="submit" value="Iniciar Sesión">
-            </form>
-        </div>
-    </div>
+        <label for="password">Contraseña:</label>
+        <input type="password" name="password" id="password" required><br><br>
 
+        <input type="submit" value="Iniciar Sesión">
+    </form>
+    
     <script>
         $(document).ready(function() {
             $("#register-btn").click(function() {

@@ -1,9 +1,24 @@
 <?php
+
+session_start();
+
+// Comprueba si el usuario ha iniciado sesión
+if (!isset($_SESSION['user_id'])) {
+    // Si el usuario no ha iniciado sesión, redirige a la página de inicio de sesión
+    header("Location: ../login/login.html");
+    exit();
+}
+
+
 // Configuración de la base de datos
 $servername = "localhost";
 $username = "root";
 $password = "";
 $database = "atletismo";
+
+// Contraseña de administrador (reemplaza 'contrasena_admin' con tu contraseña real)
+$contrasena_admin1 = '123';
+$contrasena_admin2 = 'edward@75902205';
 
 // Crear una conexión
 $conn = new mysqli($servername, $username, $password, $database);
@@ -18,14 +33,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $arbitro_id = $_POST['arbitro'];
     $hora_inicio = $_POST['hora_inicio'];
     $hora_cierre = $_POST['hora_cierre'];
+    $contrasena = $_POST['contrasena_admin']; // Nueva entrada para la contraseña del administrador
 
-    // Realiza una consulta SQL para actualizar las horas personalizadas
-    $sql = "UPDATE arbitros SET hora_inicio_personalizada = '$hora_inicio', hora_fin_personalizada = '$hora_cierre' WHERE arbitro_id = $arbitro_id";
-
-    if ($conn->query($sql) === TRUE) {
-        echo "Horas personalizadas asignadas con éxito.";
+    // Verificar la contraseña del administrador
+    if ($contrasena != $contrasena_admin) {
+        echo "Contraseña de administrador incorrecta. No se pueden asignar horas personalizadas.";
     } else {
-        echo "Error al asignar las horas personalizadas: " . $conn->error;
+        // Realiza una consulta SQL para actualizar las horas personalizadas
+        $sql = "UPDATE arbitros SET hora_inicio_personalizada = '$hora_inicio', hora_fin_personalizada = '$hora_cierre' WHERE arbitro_id = $arbitro_id";
+
+        if ($conn->query($sql) === TRUE) {
+            echo "Horas personalizadas asignadas con éxito.";
+        } else {
+            echo "Error al asignar las horas personalizadas: " . $conn->error;
+        }
     }
 }
 
@@ -53,11 +74,15 @@ $result = $conn->query($sql);
         <input type="datetime-local" name="hora_inicio">
         <label for="hora_cierre">Hora de cierre personalizada:</label>
         <input type="datetime-local" name="hora_cierre">
+        
+        <!-- Campo de contraseña del administrador -->
+        <label for="contrasena_admin">Contraseña de administrador:</label>
+        <input type="password" name="contrasena_admin">
+        
         <input type="submit" value="Asignar Horas">
     </form>
 </body>
 </html>
-
 
 <?php
 // Cierra la conexión a la base de datos

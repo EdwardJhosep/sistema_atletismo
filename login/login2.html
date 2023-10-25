@@ -8,9 +8,41 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../estilo.css">
 
-
     <style>
+        body {
+            background: #f2f2f2;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+        .form {
+            background: #fff;
+            border-radius: 8px;
+            padding: 28px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
 
+        .hidden {
+            display: none;
+        }
+
+        .fadeIn, .fadeOut {
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .fadeOut {
+            opacity: 0;
+        }
+
+        .btn-block {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -42,10 +74,9 @@
             </div>
         </div>
     </nav>
-    
 
     <h2>Iniciar Sesión</h2>
-    <form action="../php/login3.php" method="post">
+    <form action="../php/login2.php" method="post">
         <label for="username">Usuario:</label>
         <input type="text" name="username" id="username" required><br><br>
         
@@ -54,7 +85,6 @@
 
         <input type="submit" value="Iniciar Sesión">
     </form>
-    
     
     <script>
         $(document).ready(function() {
