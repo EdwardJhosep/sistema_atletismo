@@ -1,54 +1,36 @@
 <?php
 session_start();
 
-// Comprueba si el usuario ha iniciado sesión
-if (!isset($_SESSION['user_id'])) {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $username = filter_var($_POST['username'], FILTER_SANITIZE_STRING);
-        $password = $_POST['password'];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Conexión a la base de datos
+    $db_host = "localhost"; // Cambia a tu servidor de base de datos
+    $db_user = "root"; // Cambia a tu nombre de usuario
+    $db_pass = ""; // Cambia a tu contraseña
+    $db_name = "atletismo"; // Cambia al nombre de tu base de datos
+    
+    $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
 
-        $servername = "localhost";
-        $dbUsername = "root";
-        $dbPassword = "";
-        $database = "atletismo";
-
-        $conn = new mysqli($servername, $dbUsername, $dbPassword, $database);
-
-        if ($conn->connect_error) {
-            die("Error de conexión a la base de datos: " . $conn->connect_error);
-        }
-
-        $stmt = $conn->prepare("SELECT profesor_id, usuario, contrasena FROM profesores WHERE usuario = ?");
-        $stmt->bind_param("s", $username);
-        $stmt->execute();
-        $stmt->store_result();
-
-        if ($stmt->num_rows === 1) {
-            $stmt->bind_result($profesor_id, $db_username, $db_password);
-            $stmt->fetch();
-
-            // Utiliza password_verify para comparar contraseñas
-            if (password_verify($password, $db_password)) {
-                $_SESSION['user_id'] = $profesor_id;
-                header("Location: ../usuarios/profesor.php");
-                exit();
-            } else {
-                echo "Credenciales incorrectas.";
-            }
-        } else {
-            echo "Usuario no encontrado.";
-        }
-
-        $stmt->close();
-        $conn->close();
-    } else {
-        // Usuario no ha iniciado sesión y no se ha enviado el formulario, redirigir a login.html
-        header("Location: ../login/login.html");
-        exit();
+    if ($conn->connect_error) {
+        die("Conexión fallida: " . $conn->connect_error);
     }
-} else {
-    // Usuario ha iniciado sesión, redirigir a arbitro.php
-    header("Location: ../usuarios/profesor.php");
-    exit();
+    
+    // Recibir datos del formulario
+    $usuario = $_POST['usuario'];
+    $contrasena = $_POST['contrasena'];
+    
+    // Consulta para verificar el inicio de sesión
+    $sql = "SELECT * FROM profesores WHERE usuario = '$usuario' AND contrasena = '$contrasena'";
+    $result = $conn->query($sql);
+    
+    if ($result->num_rows == 1) {
+        // Inicio de sesión exitoso
+        $_SESSION['usuario'] = $usuario;
+        header("Location: ../usuarios/profesor.php"); // Redirige al panel de control o página de inicio después del inicio de sesión
+    } else {
+        // Inicio de sesión fallido
+        echo "Inicio de sesión fallido. Verifica tus credenciales.";
+    }
+    
+    $conn->close();
 }
 ?>

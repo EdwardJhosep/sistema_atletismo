@@ -1,54 +1,53 @@
 <?php
 session_start();
 
-// Comprueba si el usuario ha iniciado sesión
-if (!isset($_SESSION['user_id'])) {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $username = filter_var($_POST['username'], FILTER_SANITIZE_STRING);
-        $password = $_POST['password'];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Conexión a la base de datos
+    $db_host = "localhost"; // Cambia a tu servidor de base de datos
+    $db_user = "root"; // Cambia a tu nombre de usuario
+    $db_pass = ""; // Cambia a tu contraseña
+    $db_name = "atletismo"; // Cambia al nombre de tu base de datos
 
-        $servername = "localhost";
-        $dbUsername = "root";
-        $dbPassword = "";
-        $database = "atletismo";
+    $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
 
-        $conn = new mysqli($servername, $dbUsername, $dbPassword, $database);
-
-        if ($conn->connect_error) {
-            die("Error de conexión a la base de datos: " . $conn->connect_error);
-        }
-
-        $stmt = $conn->prepare("SELECT arbitro_id, usuario, contrasena FROM arbitros WHERE usuario = ?");
-        $stmt->bind_param("s", $username);
-        $stmt->execute();
-        $stmt->store_result();
-
-        if ($stmt->num_rows === 1) {
-            $stmt->bind_result($arbitro_id, $db_username, $db_password);
-            $stmt->fetch();
-
-            // Utiliza password_verify para comparar contraseñas
-            if (password_verify($password, $db_password)) {
-                $_SESSION['user_id'] = $arbitro_id;
-                header("Location: ../usuarios/arbitro.php");
-                exit();
-            } else {
-                echo "Credenciales incorrectas.";
-            }
-        } else {
-            echo "Usuario no encontrado.";
-        }
-
-        $stmt->close();
-        $conn->close();
-    } else {
-        // Usuario no ha iniciado sesión y no se ha enviado el formulario, redirigir a login.html
-        header("Location: ../login/login.html");
-        exit();
+    if ($conn->connect_error) {
+        die("Conexión fallida: " . $conn->connect_error);
     }
-} else {
-    // Usuario ha iniciado sesión, redirigir a arbitro.php
-    header("Location: ../usuarios/arbitro.php");
-    exit();
+
+    // Obtener datos del formulario
+    $usuario = $_POST['usuario'];
+    $contrasena = $_POST['contrasena'];
+
+    // Consulta para verificar el inicio de sesión (sin seguridad de contraseñas)
+    $query = "SELECT * FROM arbitros WHERE usuario = '$usuario' AND contrasena = '$contrasena'";
+    $result = $conn->query($query);
+
+    if ($result->num_rows > 0) {
+        // Inicio de sesión exitoso, ahora verifica la hora personalizada
+        $row = $result->fetch_assoc();
+        $hora_inicio_personalizada = $row['hora_inicio_personalizada'];
+        $hora_fin_personalizada = $row['hora_fin_personalizada'];
+
+        // Configurar la zona horaria a Perú
+        date_default_timezone_set('America/Lima');
+
+        // Obtén la hora actual en la zona horaria de Perú
+        $hora_actual_peru = date('Y-m-d H:i:s');
+
+        if ($hora_actual_peru >= $hora_inicio_personalizada && $hora_actual_peru <= $hora_fin_personalizada) {
+            // El árbitro está dentro de su horario personalizado en la zona horaria de Perú
+            header("Location: ../usuarios/arbitro.php");
+            exit;
+        } else {
+            // Fuera del horario personalizado
+            echo "No estás autorizado para iniciar sesión en este momento.";
+        }
+    } else {
+        // Inicio de sesión fallido
+        echo "Usuario o contraseña incorrectos. Por favor, intenta de nuevo.";
+    }
+
+    // Cerrar la conexión a la base de datos
+    $conn->close();
 }
 ?>

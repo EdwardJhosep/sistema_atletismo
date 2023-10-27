@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 
 // Comprueba si el usuario ha iniciado sesión
@@ -9,14 +8,13 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-
 // Configuración de la base de datos
 $servername = "localhost";
 $username = "root";
 $password = "";
 $database = "atletismo";
 
-// Contraseña de administrador (reemplaza 'contrasena_admin' con tu contraseña real)
+// Contraseña de administrador (reemplaza 'contrasena_admin1' y 'contrasena_admin2' con tus contraseñas reales)
 $contrasena_admin1 = '123';
 $contrasena_admin2 = 'edward@75902205';
 
@@ -33,10 +31,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $arbitro_id = $_POST['arbitro'];
     $hora_inicio = $_POST['hora_inicio'];
     $hora_cierre = $_POST['hora_cierre'];
-    $contrasena = $_POST['contrasena_admin']; // Nueva entrada para la contraseña del administrador
+    $contrasena = $_POST['contrasena_admin'];
 
     // Verificar la contraseña del administrador
-    if ($contrasena != $contrasena_admin) {
+    if ($contrasena != $contrasena_admin1 && $contrasena != $contrasena_admin2) {
         echo "Contraseña de administrador incorrecta. No se pueden asignar horas personalizadas.";
     } else {
         // Realiza una consulta SQL para actualizar las horas personalizadas
