@@ -1,13 +1,4 @@
 <?php
-session_start();
-
-// Comprueba si el usuario ha iniciado sesión
-if (!isset($_SESSION['user_id'])) {
-    // Si el usuario no ha iniciado sesión, redirige a la página de inicio de sesión
-    header("Location: ../login/login.html");
-    exit();
-}
-
 // Configuración de la base de datos
 $servername = "localhost";
 $username = "root";

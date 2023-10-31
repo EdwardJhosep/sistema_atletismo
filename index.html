@@ -52,6 +52,66 @@
   text-align: center;
   animation: moveText 3s infinite; 
 }
+.navbar-nav li.active a {
+  background-color: #337ab7; /* Cambia el color de fondo según tus preferencias */
+  color: #ffffff; /* Cambia el color del texto según tus preferencias */
+}
+
+/* Añadir un efecto de transición suave al cambiar de color */
+.navbar-nav li a {
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Estilo para el enlace activo en hover (cuando el mouse pasa por encima) */
+.navbar-nav li.active a:hover {
+  background-color: #235a96; /* Cambia el color de fondo al pasar el mouse */
+}
+
+/* CSS */
+body {
+  background-image: url('https://img.freepik.com/fotos-premium/cerrar-estadio-atletismo-vistas-pista-carreras_916191-33218.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.panel-body {
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  text-align: center;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.panel-body h3 {
+  margin: 0;
+  animation: moveText 3s infinite;
+}
+
+.panel-body img {
+  width: 100px;
+  height: 50px;
+  margin: 20px;
+  margin-left: 27%;
+}
+
+@keyframes moveText {
+  0% {
+      transform: translateX(0);
+  }
+  50% {
+      transform: translateX(10px);
+  }
+  100% {
+      transform: translateX(0);
+  }
+}
+
+.EVENTOS {
+  text-align: center;
+  animation: moveText 3s infinite;
+}
 </style>
 
 <title>ATLETISMO</title>
@@ -74,7 +134,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
-                <li class="active"><a href="index.html">INICIO <span class="sr-only">(current)</span></a></li>
+                <li><a href="index.html">INICIO</a></li>
                 <li><a href="login/admin.html">ADMIN</a></li>
                 <li><a href="login/login.html">INICIAR encargado</a></li>
                 <li><a href="login/login2.html">INICIAR profesor</a></li>
@@ -89,77 +149,13 @@
 
 
 
+
   <!-- Asegúrate de que esta línea esté antes del cierre del cuerpo (</body>) -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   
   
   
-    <!-- Agrega el siguiente código justo antes del cierre del cuerpo (</body>) -->
-
-<div class="container">
-  <h2>Buscar Atletas</h2>
-  <div class="input-group">
-    <input type="text" id="buscador" class="form-control" placeholder="Buscar atleta...">
-    <span class="input-group-btn">
-      <button class="btn btn-default" id="boton-buscar" type="button">Buscar</button>
-    </span>
-  </div>
-  <div id="resultados-busqueda"></div>
-</div>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    // Array de atletas (debes reemplazarlo con tus datos reales)
-    var atletas = [
-      { nombre: "Atleta 1", deporte: "Deporte 1" },
-      { nombre: "Atleta 2", deporte: "Deporte 2" },
-      { nombre: "Atleta 3", deporte: "Deporte 1" },
-      // Agrega más atletas con sus datos aquí
-    ];
-
-    // Función para mostrar los resultados de la búsqueda
-    function mostrarResultados(resultados) {
-      var resultadosContainer = document.getElementById("resultados-busqueda");
-      resultadosContainer.innerHTML = "";
-
-      if (resultados.length === 0) {
-        resultadosContainer.innerHTML = "No se encontraron resultados.";
-      } else {
-        var listaResultados = document.createElement("ul");
-        resultados.forEach(function(atleta) {
-          var item = document.createElement("li");
-          item.textContent = atleta.nombre + " - " + atleta.deporte;
-          listaResultados.appendChild(item);
-        });
-        resultadosContainer.appendChild(listaResultados);
-      }
-    }
-
-    // Función para buscar atletas
-    function buscarAtletas() {
-      var inputBuscador = document.getElementById("buscador");
-      var consulta = inputBuscador.value.toLowerCase();
-
-      var resultados = atletas.filter(function(atleta) {
-        return atleta.nombre.toLowerCase().includes(consulta) || atleta.deporte.toLowerCase().includes(consulta);
-      });
-
-      mostrarResultados(resultados);
-    }
-
-    // Agrega un controlador de eventos para el botón de búsqueda
-    var botonBuscar = document.getElementById("boton-buscar");
-    botonBuscar.addEventListener("click", buscarAtletas);
-
-    // Agrega un controlador de eventos para la entrada de texto (para buscar al presionar Enter)
-    var inputBuscador = document.getElementById("buscador");
-    inputBuscador.addEventListener("keyup", function(event) {
-      if (event.key === "Enter") {
-        buscarAtletas();
-      }
-    });
-  });
-</script>
+  <br><br><br><br>
 
 <div class="container">
   <h1 class="EVENTOS">Eventos de Atletismo</h1>

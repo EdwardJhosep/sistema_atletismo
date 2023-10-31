@@ -7,7 +7,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <link rel="stylesheet" type="text/css" href="../estilo.css">
-
+<script src="script.js"></script>
 <title>Document</title>
 </head>
 <body>
@@ -29,7 +29,7 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="../index.html">INICIO <span class="sr-only">(current)</span></a></li>
+        <li><a href="../index.html">INICIO</a></li>
         <li><a href="../login/admin.html">ADMIN</a></li>
         <li><a href="../login/login.html">INICIAR encargado</a></li>
         <li><a href="../login/login2.html">INICIAR profesor</a></li>
@@ -42,6 +42,18 @@
   </div>
     </nav>
     <BR><BR><BR><BR><BR>
+      <div class="container">
+        <h1>Buscar Atletas por Nombre</h1>
+        <form action="../php/filtrar_atletas.php" method="POST">
+            <label for="nombre">Nombre:</label>
+            <input type="text" name="nombre" id="nombre">
+            <input type="submit" value="Buscar">
+        </form>
+        <div id="search-results"></div>
+    </div>
+        <BR><BR><BR><BR><BR>
+
+          
         <!-- Panel de Publicidad con imágenes -->
         <div class="publicidad" style="text-align: center; padding: 20px;">
           <div class="container">

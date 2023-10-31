@@ -9,41 +9,54 @@
     <link rel="stylesheet" type="text/css" href="../estilo.css">
 
     <style>
-        body {
-            background: #f2f2f2;
-        }
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
+        /* Estilo para el formulario de inicio de sesión */
+        form {
+            max-width: 300px;
+            margin: 0 auto;
             padding: 20px;
+            background-color: #f7f7f7;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px #888888;
         }
-        .form {
-            background: #fff;
-            border-radius: 8px;
-            padding: 28px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            width: 100%;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .fadeIn, .fadeOut {
-            transition: opacity 0.5s ease-in-out;
-        }
-
-        .fadeOut {
-            opacity: 0;
-        }
-
-        .btn-block {
+    
+        label {
             display: block;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+    
+        input[type="submit"] {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+    
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    
+        /* Estilo para el título "Iniciar sesión" */
+        h2 {
+            text-align: center;
+            font-size: 24px;
+            margin-top: 20px;
         }
     </style>
+    
 </head>
 <body>
     <nav class="navbar navbar-default navbar-fixed-top">
@@ -62,7 +75,7 @@
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="../index.html">INICIO <span class="sr-only">(current)</span></a></li>
+                    <li><a href="../index.html">INICIO</a></li>
                     <li><a href="admin.html">ADMIN</a></li>
                     <li><a href="login.html">INICIAR encargado</a></li>
                     <li><a href="login2.html">INICIAR profesor</a></li>
@@ -74,8 +87,8 @@
             </div>
         </div>
     </nav>
-
-        <h2>Iniciar sesión</h2>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br>
+            <h2>Iniciar sesión </h2>
         <form action="../php/login1.php" method="post">
             <label for="username">Usuario:</label>
             <input type="text" name="username" required><br>
@@ -84,6 +97,9 @@
             <input type="password" name="password" required><br>
     
             <input type="submit" value="Iniciar sesión">
+            <BR>
+                <br>
+                <P>Desarollado Por: Edward Juanante Rodriguez </P>
         </form>
     
     <script>

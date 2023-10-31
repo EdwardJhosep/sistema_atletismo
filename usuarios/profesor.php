@@ -1,13 +1,4 @@
 
-<?php
-session_start();
-
-// Comprueba si el usuario ha iniciado sesión
-if (!isset($_SESSION['user_id'])) {
-    header("Location: ../login/login2.html");
-    exit();
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

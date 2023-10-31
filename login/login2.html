@@ -9,40 +9,51 @@
     <link rel="stylesheet" type="text/css" href="../estilo.css">
 
     <style>
-        body {
-            background: #f2f2f2;
-        }
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            padding: 20px;
-        }
-        .form {
-            background: #fff;
-            border-radius: 8px;
-            padding: 28px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            width: 100%;
-        }
+        /* Estilo para el formulario de inicio de sesión */
+h2 {
+    text-align: center;
+    margin-top: 30px;
+}
 
-        .hidden {
-            display: none;
-        }
+form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
-        .fadeIn, .fadeOut {
-            transition: opacity 0.5s ease-in-out;
-        }
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
 
-        .fadeOut {
-            opacity: 0;
-        }
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
 
-        .btn-block {
-            display: block;
-        }
+input[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Puedes ajustar los colores y estilos según tus preferencias */
+
     </style>
 </head>
 <body>
@@ -59,10 +70,9 @@
                     <img src="../img/logo.jpg" alt="Logo de tu sitio" style="width: 255px; height: 40px; margin-right: 10px;">
                 </a>
             </div>
-
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="../index.html">INICIO <span class="sr-only">(current)</span></a></li>
+                    <li><a href="../index.html">INICIO</a></li>
                     <li><a href="admin.html">ADMIN</a></li>
                     <li><a href="login.html">INICIAR encargado</a></li>
                     <li><a href="login2.html">INICIAR profesor</a></li>
@@ -74,8 +84,8 @@
             </div>
         </div>
     </nav>
-
-    <h2>Iniciar Sesión</h2>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <h2>Iniciar Sesión </h2>
         <form action="../php/login2.php" method="POST">
             <label for="usuario">Usuario:</label>
             <input type="text" name="usuario" id="usuario" required>
@@ -84,6 +94,9 @@
             <input type="password" name="contrasena" id="contrasena" required>
             <br>
             <input type="submit" value="Iniciar Sesión">
+            <BR>
+            <br>
+            <P>Desarollado Por: Edward Juanante Rodriguez </P>
         </form>
     
     <script>
