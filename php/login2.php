@@ -28,9 +28,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: ../usuarios/profesor.php"); // Redirige al panel de control o página de inicio después del inicio de sesión
     } else {
         // Inicio de sesión fallido
-        echo "Inicio de sesión fallido. Verifica tus credenciales.";
+        echo '<div class="error-message">Inicio de sesión fallido. Verifica tus credenciales.</div>';
+        echo '<button id="backButton">Aceptar</button>';
     }
     
     $conn->close();
 }
 ?>
+
+<!-- Agrega este código CSS y JavaScript en tu HTML para el diseño y el botón de Aceptar -->
+
+<style>
+    .error-message {
+        background-color: #f44336;
+        color: white;
+        text-align: center;
+        padding: 10px;
+        border-radius: 5px;
+    }
+    
+    #backButton {
+        display: block;
+        margin: 20px auto;
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>
+
+<script>
+    document.getElementById('backButton').addEventListener('click', function() {
+        // Redirige de vuelta al formulario de inicio de sesión
+        window.location.href = '../login/login2.html';
+    });
+</script>

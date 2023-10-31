@@ -26,15 +26,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Verificar la contraseña del administrador
     if ($contrasena != $contrasena_admin1 && $contrasena != $contrasena_admin2) {
-        echo "Contraseña de administrador incorrecta. No se pueden asignar horas personalizadas.";
+        echo "<div class='error'>Contraseña de administrador incorrecta. No se pueden asignar horas personalizadas.</div>";
     } else {
         // Realiza una consulta SQL para actualizar las horas personalizadas
         $sql = "UPDATE arbitros SET hora_inicio_personalizada = '$hora_inicio', hora_fin_personalizada = '$hora_cierre' WHERE arbitro_id = $arbitro_id";
 
         if ($conn->query($sql) === TRUE) {
-            echo "Horas personalizadas asignadas con éxito.";
+            echo "<div class='success'>Horas personalizadas asignadas con éxito.</div>";
         } else {
-            echo "Error al asignar las horas personalizadas: " . $conn->error;
+            echo "<div class='error'>Error al asignar las horas personalizadas: " . $conn->error . "</div>";
         }
     }
 }
@@ -47,7 +47,87 @@ $result = $conn->query($sql);
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="icon" href="https://www.shutterstock.com/image-vector/initial-letter-ap-logo-design-260nw-2343832111.jpg" type="image/png">
     <title>Asignar Horas Personalizadas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        form {
+            width: 50%;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        select,
+        input[type="datetime-local"],
+        input[type="password"],
+        input[type="submit"] {
+            display: block;
+            margin: 10px 0;
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input[type="submit"] {
+            background-color: #007BFF;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        a {
+            display: inline-block;
+            text-decoration: none;
+            background-color: #FF0000;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        a:hover {
+            background-color: #CC0000;
+        }
+
+        .success {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .error {
+            background-color: #FF0000;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
     <h2>Árbitros:</h2>
@@ -69,6 +149,7 @@ $result = $conn->query($sql);
         <input type="password" name="contrasena_admin">
         
         <input type="submit" value="Asignar Horas">
+        <a href="../usuarios/users.php">Volver</a>
     </form>
 </body>
 </html>

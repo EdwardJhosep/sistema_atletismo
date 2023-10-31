@@ -7,47 +7,61 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $db_user = "root"; // Cambia a tu nombre de usuario
     $db_pass = ""; // Cambia a tu contraseña
     $db_name = "atletismo"; // Cambia al nombre de tu base de datos
-
+    
     $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
 
     if ($conn->connect_error) {
         die("Conexión fallida: " . $conn->connect_error);
     }
-
-    // Obtener datos del formulario
+    
+    // Recibir datos del formulario
     $usuario = $_POST['usuario'];
     $contrasena = $_POST['contrasena'];
-
-    // Consulta para verificar el inicio de sesión (sin seguridad de contraseñas)
-    $query = "SELECT * FROM arbitros WHERE usuario = '$usuario' AND contrasena = '$contrasena'";
-    $result = $conn->query($query);
-
-    if ($result->num_rows > 0) {
-        // Inicio de sesión exitoso, ahora verifica la hora personalizada
-        $row = $result->fetch_assoc();
-        $hora_inicio_personalizada = $row['hora_inicio_personalizada'];
-        $hora_fin_personalizada = $row['hora_fin_personalizada'];
-
-        // Configurar la zona horaria a Perú
-        date_default_timezone_set('America/Lima');
-
-        // Obtén la hora actual en la zona horaria de Perú
-        $hora_actual_peru = date('Y-m-d H:i:s');
-
-        if ($hora_actual_peru >= $hora_inicio_personalizada && $hora_actual_peru <= $hora_fin_personalizada) {
-            // El árbitro está dentro de su horario personalizado en la zona horaria de Perú
-            header("Location: ../usuarios/arbitro.php");
-            exit;
-        } else {
-            // Fuera del horario personalizado
-            echo "No estás autorizado para iniciar sesión en este momento.";
-        }
+    
+    // Consulta para verificar el inicio de sesión
+    $sql = "SELECT * FROM arbitros WHERE usuario = '$usuario' AND contrasena = '$contrasena'";
+    $result = $conn->query($sql);
+    
+    if ($result->num_rows == 1) {
+        // Inicio de sesión exitoso
+        $_SESSION['usuario'] = $usuario;
+        header("Location: ../usuarios/arbitro.php"); // Redirige al panel de control o página de inicio después del inicio de sesión
     } else {
         // Inicio de sesión fallido
-        echo "Usuario o contraseña incorrectos. Por favor, intenta de nuevo.";
+        echo '<div class="error-message">Inicio de sesión fallido. Verifica tus credenciales.</div>';
+        echo '<button id="backButton">Aceptar</button>';
     }
-
-    // Cerrar la conexión a la base de datos
+    
     $conn->close();
 }
 ?>
+
+<!-- Agrega este código CSS y JavaScript en tu HTML para el diseño y el botón de Aceptar -->
+
+<style>
+    .error-message {
+        background-color: #f44336;
+        color: white;
+        text-align: center;
+        padding: 10px;
+        border-radius: 5px;
+    }
+    
+    #backButton {
+        display: block;
+        margin: 20px auto;
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>
+
+<script>
+    document.getElementById('backButton').addEventListener('click', function() {
+        // Redirige de vuelta al formulario de inicio de sesión
+        window.location.href = '../login/login2.html';
+    });
+</script>

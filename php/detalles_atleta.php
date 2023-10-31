@@ -3,85 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://www.shutterstock.com/image-vector/initial-letter-ap-logo-design-260nw-2343832111.jpg" type="image/png">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../estilo.css">
     <style>
-    /* Estilo de ejemplo en línea */
+/* Style for the main content container */
 .container {
-    align-content: center;
-    margin: 20px;
+    margin: 20px auto; /* Center the container horizontally */
     padding: 20px;
     border: 1px solid #ccc;
     background-color: #f9f9f9;
 }
 
-.publicidad {
+/* Style for the header (navbar) to center it */
+.container-fluid {
     text-align: center;
-    padding: 20px;
-    background-color: #e0e0e0;
 }
 
-#athlete-container { /* CSS for the container with background image */
-    background-image: url('https://img.freepik.com/fotos-premium/bandera-peru-musculos-abdominales-entrenamiento-deporte-nacional-concepto-culturismo-fondo-negro_559531-6988.jpg'); /* Replace with the path to your background image */
+/* Style for the container with background image */
+#athlete-container {
+    background-image: url('https://img.freepik.com/fotos-premium/bandera-peru-musculos-abdominales-entrenamiento-deporte-nacional-concepto-culturismo-fondo-negro_559531-6988.jpg');
     background-size: cover;
     background-position: center;
-    color: #fff; /* Set text color to white for better visibility */
+    color: #fff;
     padding: 20px;
 }
-
-.athlete-name { /* CSS style for the athlete's name */
-    font-size: 132px; /* Adjust the font size as needed */
+/* CSS styles for athlete's name */
+.athlete-name {
+    font-size: 132px;
     font-weight: bold;
     text-transform: uppercase;
+    font-family: 'Arial', sans-serif; /* Change the font family to Arial or your preferred font */
+    color: #FF0000; /* Red text color for the athlete's name */
+    /* Add any other text styles you want for the athlete's name */
 }
 
-.athlete-last { /* CSS style for the athlete's name */
-    font-size: 52px; /* Adjust the font size as needed */
+/* CSS for other athlete details */
+.athlete-last {
+    font-size: 63px;
     font-weight: bold;
     text-transform: uppercase;
+    font-family: 'Verdana', sans-serif; /* Change the font family to Verdana or your preferred font */
+    color: #00FF00; /* Green text color for the last name */
+    /* Add any other text styles you want for the last name */
 }
 
-.athlete-3 { /* CSS style for the athlete's name */
-    font-size: 17px; /* Adjust the font size as needed */
+.athlete-3 {
+    font-size: 23px;
     font-weight: bold;
     text-transform: uppercase;
+    font-family: 'Times New Roman', serif; /* Change the font family to Times New Roman or your preferred font */
+    /* Add text styles for athlete-3 */
 }
 
-.athlete-4 { /* CSS style for the athlete's name */
-    font-size: 23px; /* Adjust the font size as needed */
+.athlete-4 {
+    font-size: 43px;
     font-weight: bold;
     text-transform: uppercase;
-}
-.athlete-1 { /* CSS style for the athlete's name */
-    font-size: 33px; /* Adjust the font size as needed */
-    font-weight: bold;
-    text-transform: uppercase;
+    font-family: 'Georgia', serif; /* Change the font family to Georgia or your preferred font */
+    /* Add text styles for athlete-4 */
 }
 
-.athlete-2 { /* CSS style for the athlete's name */
-    font-size: 23px; /* Adjust the font size as needed */
+.athlete-1 {
+    font-size: 43px;
     font-weight: bold;
     text-transform: uppercase;
+    font-family: 'Tahoma', sans-serif; /* Change the font family to Tahoma or your preferred font */
+    /* Add text styles for athlete-1 */
 }
-/* Estilo para el pie de página */
+
+.athlete-2 {
+    font-size: 33px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-family: 'Courier New', monospace; /* Change the font family to Courier New or your preferred font */
+    /* Add text styles for athlete-2 */
+}
+
+
+/* Style for the footer */
 footer {
     background-color: #535353;
     padding: 20px;
-    color: #ffffff;
-    text-align: center;
+    color: #fff;
 }
 
 footer a {
-    color: #ff9900; /* Cambia el color de los enlaces en el pie de página */
+    color: #ff9900;
 }
 
 footer a:hover {
-    color: #fff; /* Cambia el color de los enlaces al pasar el cursor */
+    color: #fff;
 }
-
 </style>
+
 </head>
 <body>
     <nav class="navbar navbar-default">
@@ -141,11 +158,11 @@ footer a:hover {
             echo "<div id=\"athlete-container\" class=\"container\">";
             echo "<p class='athlete-name'>" . $fila['nombre'] . "</p>";
             echo "<p class='athlete-last'>" . $fila['apellido'] . "</p>";
-            echo "<p>" . $fila['pais'] . " <img src='https://i.pinimg.com/originals/4b/da/b6/4bdab6a64af4d3e35d2b4d746a14b2c4.jpg' alt='" . $fila['pais'] . " Flag' width='30' height='20'></p>";
-            echo "<p class='athlete-3'>Fecha de Nacimiento: " . $fila['nacimiento'] . "</p>";
             echo "<p class='athlete-4'>institucion: " . $fila['institucion'] . "</p>";
             echo "<p class='athlete-1'>Departamento: " . $fila['departamento'] . "</p>";
             echo "<p class='athlete-2'>Provincia: " . $fila['provincia'] . "</p>";
+            echo "<p class='athlete-3'>Fecha de Nacimiento: " . $fila['nacimiento'] . "</p>";
+            echo "<p>" . $fila['pais'] . " <img src='https://i.pinimg.com/originals/4b/da/b6/4bdab6a64af4d3e35d2b4d746a14b2c4.jpg' alt='" . $fila['pais'] . " Flag' width='40' height='30'></p>";
             echo "</div>";
         } else {
             echo "Atleta no encontrado";
