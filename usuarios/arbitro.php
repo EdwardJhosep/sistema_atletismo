@@ -19,7 +19,7 @@ if (!isset($_SESSION['usuario'])) {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Asignar Horas Personalizadas</title>
+    <title>PANEL DEL ARBITRO</title>
     <link rel="icon" href="https://www.shutterstock.com/image-vector/initial-letter-ap-logo-design-260nw-2343832111.jpg" type="image/png">
     <script>
         var xhr = new XMLHttpRequest();
@@ -54,6 +54,15 @@ if (!isset($_SESSION['usuario'])) {
                 var horaCierre = respuesta.horaCierre;
                 iniciarContador(horaCierre);
             }
+            // Resto de tu código JavaScript aquí
+
+window.onfocus = function() {
+    // Esta función se ejecutará cuando la ventana vuelva a estar en foco
+
+    // Recarga la página
+    window.location.reload();
+};
+
         };
     </script>
     <style>
@@ -148,7 +157,7 @@ if (!isset($_SESSION['usuario'])) {
 </head>
 <body>
 <header>
-        <h1>Asignar Horas Personalizadas</h1>
+        <h1>PANEL DEL ARBITRO</h1>
     </header>
     <div id="container" class="content">
         <h2>Árbitros:</h2>

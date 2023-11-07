@@ -16,17 +16,25 @@ if ($conn->connect_error) {
 // Establecer la zona horaria a Perú
 date_default_timezone_set('America/Lima');
 
-// Realiza una consulta SQL para obtener la hora de cierre del árbitro
-$sql = "SELECT hora_fin_personalizada FROM arbitros WHERE arbitro_id = 1"; // Reemplaza "1" por el ID del árbitro que necesitas
+// Verificar si el usuario ha iniciado sesión
+session_start();
+if (isset($_SESSION['usuario'])) {
+    $usuario = $_SESSION['usuario'];
 
-$result = $conn->query($sql);
+    // Realiza una consulta SQL para obtener la hora de cierre del árbitro relacionado con el usuario que ha iniciado sesión
+    $sql = "SELECT hora_fin_personalizada FROM arbitros WHERE usuario = '$usuario'"; // Reemplaza 'usuario' por el campo que identifica al usuario en la tabla de árbitros
 
-if ($result->num_rows == 1) {
-    $row = $result->fetch_assoc();
-    $horaCierre = strtotime($row['hora_fin_personalizada']); // Convierte la hora a un timestamp
-    echo json_encode(['horaCierre' => $horaCierre]);
+    $result = $conn->query($sql);
+
+    if ($result->num_rows == 1) {
+        $row = $result->fetch_assoc();
+        $horaCierre = strtotime($row['hora_fin_personalizada']); // Convierte la hora a un timestamp
+        echo json_encode(['horaCierre' => $horaCierre]);
+    } else {
+        echo json_encode(['error' => 'Árbitro no encontrado']);
+    }
 } else {
-    echo json_encode(['error' => 'Árbitro no encontrado']);
+    echo json_encode(['error' => 'Usuario no ha iniciado sesión']);
 }
 
 // Cierra la conexión a la base de datos

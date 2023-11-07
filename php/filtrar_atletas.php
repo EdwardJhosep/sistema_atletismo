@@ -50,7 +50,6 @@
                     <li class="active"><a href="../index.html">INICIO <span class="sr-only">(current)</span></a></li>
                     <li><a href="../login/admin.html">ADMIN</a></li>
                     <li><a href="../login/login.html">INICIAR encargado</a></li>
-                    <li><a href="../login/login2.html">INICIAR profesor</a></li>
                     <li><a href="../menu/torneo.html">TORNEO</a></li>
                     <li><a href="../menu/calendario.html">CALENDARIO</a></li>
                     <li><a href="../menu/atletas.html">ATLETAS</a></li>
