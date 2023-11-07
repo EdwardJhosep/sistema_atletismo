@@ -1,4 +1,21 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['username'])) {
+    header("Location: ../login/admin.html");
+    exit();
+}
+
+if (isset($_POST['logout'])) {
+    // Destruye la sesión primero
+    session_destroy();
+
+    // Luego, redirige al usuario a la página de inicio de sesión
+    header("Location: ../login/admin.html");
+    exit();
+}
+?>
+<?php
 // Configuración de la base de datos
 $servername = "localhost";
 $username = "root";

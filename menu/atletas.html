@@ -10,6 +10,49 @@
 <link rel="stylesheet" type="text/css" href="../estilo.css">
 <script src="script.js"></script>
 <title>Document</title>
+<style>
+  .container1 {
+      text-align: center;
+      margin: 20px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      background-color: #f9f9f9;
+  }
+
+  h1 {
+      font-size: 28px;
+  }
+
+  label {
+      font-size: 18px;
+      font-weight: bold;
+  }
+
+  input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+  }
+
+  input[type="submit"] {
+      background-color: #007bff; /* Color de fondo del botón */
+      color: #fff; /* Color del texto del botón */
+      padding: 10px 20px;
+      font-size: 18px;
+      border: none;
+      cursor: pointer;
+  }
+
+  input[type="submit"]:hover {
+      background-color: #0056b3; /* Color de fondo del botón al pasar el cursor */
+  }
+
+  #search-results {
+      margin-top: 20px;
+  }
+</style>
+
+
 </head>
 <body>
     <nav class="navbar navbar-default">
@@ -43,11 +86,13 @@
   </div>
     </nav>
     <BR><BR><BR><BR><BR>
-      <div class="container">
+      <div class="container1">
         <h1>Buscar Atletas por Nombre</h1>
         <form action="../php/filtrar_atletas.php" method="POST">
             <label for="nombre">Nombre:</label>
             <input type="text" name="nombre" id="nombre">
+            <br>
+            <br>
             <input type="submit" value="Buscar">
         </form>
         <div id="search-results"></div>
