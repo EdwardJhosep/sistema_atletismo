@@ -2,88 +2,100 @@
 session_start();
 
 if (!isset($_SESSION['username'])) {
-    header("Location: ../login/login2.html");
+    header("Location: ../login/login.html");
     exit();
 }
 
 if (isset($_POST['logout'])) {
-    // Destruye la sesión primero
     session_destroy();
-
-    // Luego, redirige al usuario a la página de inicio de sesión
-    header("Location: ../login/login2.html");
+    header("Location: ../login/login.html");
     exit();
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Conexión a la base de datos
-    $db_host = "localhost"; // Cambia a tu servidor de base de datos
-    $db_user = "root"; // Cambia a tu nombre de usuario
-    $db_pass = ""; // Cambia a tu contraseña
-    $db_name = "atletismo"; // Cambia al nombre de tu base de datos
+$error_message = ''; // Variable para almacenar mensajes de error
 
-    // Crea la conexión a la base de datos
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $db_host = "localhost";
+    $db_user = "root";
+    $db_pass = "";
+    $db_name = "atletismo";
+
     $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
 
-    // Verifica la conexión
     if ($conn->connect_error) {
         die("Error de conexión: " . $conn->connect_error);
     }
 
-    // Consulta para obtener el último número de usuario en la tabla "arbitros"
-    $sql = "SELECT MAX(usuario) AS max_usuario FROM arbitros";
-    $result = $conn->query($sql);
+    $dni = $_POST['dni'];
 
-    if ($result && $row = $result->fetch_assoc()) {
-        // Incrementa el último número de usuario en 1 para el nuevo árbitro
-        $usuario = $row['max_usuario'] + 1;
+    $sql_check = "SELECT dni FROM arbitros WHERE dni = ?";
+    
+    if ($stmt_check = $conn->prepare($sql_check)) {
+        $stmt_check->bind_param("s", $dni);
+        $stmt_check->execute();
+        $stmt_check->store_result();
+        
+        if ($stmt_check->num_rows > 0) {
+            $error_message = "El DNI ingresado ya existe . No se pudo agregar al árbitro.";
+        } else {
+            $usuario = ''; // Variable para almacenar el nuevo usuario
 
-        // Recopila otros datos del formulario
-        $nombre = $_POST['nombre'];
-        $apellido = $_POST['apellido'];
-        $dni = $_POST['dni'];
-        $contrasena = $_POST['contrasena'];
-        $nivel = $_POST['nivel'];
+            $sql_max_user = "SELECT MAX(usuario) AS max_usuario FROM arbitros";
+            $result_max_user = $conn->query($sql_max_user);
 
-        // Prepara la consulta SQL para insertar un nuevo árbitro
-        $sql = "INSERT INTO arbitros (nombre, apellido, dni, usuario, contrasena) VALUES (?, ?, ?, ?, ?)";
+            if ($result_max_user && $row_max_user = $result_max_user->fetch_assoc()) {
+                $usuario = $row_max_user['max_usuario'] + 1;
 
-        // Prepara la declaración
-        if ($stmt = $conn->prepare($sql)) {
-            // Vincula los parámetros y establece sus valores
-            $stmt->bind_param("sssss", $nombre, $apellido, $dni, $usuario, $contrasena,$nivel);
+                $nombre = $_POST['nombre'];
+                $apellido = $_POST['apellido'];
+                $contrasena = $_POST['contrasena'];
+                $contrasena_hasheada = password_hash($contrasena, PASSWORD_BCRYPT);
+                $nivel = $_POST['nivel'];
 
-            // Ejecuta la consulta
-            if ($stmt->execute()) {
-                echo "Árbitro agregado con éxito. Nuevo usuario: " . $usuario;
+                $sql_insert = "INSERT INTO arbitros (nombre, apellido, dni, usuario, contrasena, nivel) VALUES (?, ?, ?, ?, ?, ?)";
+
+                if ($stmt_insert = $conn->prepare($sql_insert)) {
+                    $stmt_insert->bind_param("ssisss", $nombre, $apellido, $dni, $usuario, $contrasena_hasheada, $nivel);
+
+                    if ($stmt_insert->execute()) {
+                        $error_message = "Árbitro agregado con éxito. Nuevo usuario: " . $usuario;
+                    } else {
+                        $error_message = "Error al agregar árbitro: " . $conn->error;
+                    }
+
+                    $stmt_insert->close();
+                } else {
+                    $error_message = "Error en la preparación de la consulta: " . $conn->error;
+                }
             } else {
-                echo "Error al agregar árbitro: " . $conn->error;
+                $error_message = "Error al obtener el último usuario.";
             }
-
-            // Cierra la declaración
-            $stmt->close();
         }
-    } else {
-        echo "Error al obtener el último usuario.";
+        
+        $stmt_check->close();
     }
 
-    // Cierra la conexión a la base de datos
     $conn->close();
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agregar Profesor</title>
-    <!-- Agregar el enlace a Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
 
 <div class="container">
     <h2 class="mt-4">Agregar profesor</h2>
+    <?php
+    if (!empty($error_message)) {
+        echo '<div class="alert alert-danger">' . $error_message . '</div>';
+    }
+    ?>
     <form action="agregararbitro.php" method="POST">
         <div class="form-group">
             <label for="nombre">Nombre:</label>
@@ -101,13 +113,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
 
         <div class="form-group">
-            <label for="contrasena">Contraseña:</label>
+            <label for ="contrasena">Contraseña:</label>
             <input type="password" class="form-control" name="contrasena" required>
         </div>
 
         <div class="form-group">
             <label for="nivel">Nivel:</label>
-            <input type="nivel" class="form-control" name="nivel" required>
+            <input type="text" class="form-control" name ="nivel" required>
         </div>
 
         <button type="submit" class="btn btn-primary">Agregar Profesor</button>
@@ -115,7 +127,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <a class="btn btn-secondary mt-3" href="../usuarios/users.php">Volver</a>
 </div>
 
-<!-- Agregar el enlace a Bootstrap JS y jQuery (opcional) -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

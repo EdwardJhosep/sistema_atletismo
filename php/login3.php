@@ -18,18 +18,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $usuario = $_POST['usuario'];
     $contrasena = $_POST['contrasena'];
     
-    // Consulta para verificar el inicio de sesión
-    $sql = "SELECT * FROM arbitros WHERE usuario = '$usuario' AND contrasena = '$contrasena'";
-    $result = $conn->query($sql);
-    
-    if ($result->num_rows == 1) {
-        // Inicio de sesión exitoso
-        $_SESSION['usuario'] = $usuario;
-        header("Location: ../usuarios/arbitro.php"); // Redirige al panel de control o página de inicio después del inicio de sesión
+    // Consulta para obtener la contraseña hash asociada al usuario
+    $sql = "SELECT contrasena FROM arbitros WHERE usuario = ?";
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->bind_param("s", $usuario);
+        $stmt->execute();
+        $stmt->bind_result($contrasena_hash);
+        $stmt->fetch();
+        $stmt->close();
+        
+        if (password_verify($contrasena, $contrasena_hash)) {
+            // Contraseña correcta, inicio de sesión exitoso
+            $_SESSION['usuario'] = $usuario;
+            header("Location: ../usuarios/arbitro.php"); // Redirige al panel de control o página de inicio después del inicio de sesión
+        } else {
+            // Contraseña incorrecta, inicio de sesión fallido
+            echo '<div class="error-message">Inicio de sesión fallido. Verifica tus credenciales.</div>';
+            echo '<button id="backButton">Aceptar</button>';
+        }
     } else {
-        // Inicio de sesión fallido
-        echo '<div class="error-message">Inicio de sesión fallido. Verifica tus credenciales.</div>';
-        echo '<button id="backButton">Aceptar</button>';
+        echo "Error en la preparación de la consulta: " . $conn->error;
     }
     
     $conn->close();
