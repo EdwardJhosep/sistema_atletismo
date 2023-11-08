@@ -81,7 +81,6 @@ if (isset($_POST['logout'])) {
 <body>
     <h1>Panel de Administrador</h1>
     <a href="../php/cargar_arbitros.php"><button>Cargar Árbitros</button></a>
-    <a href="../php/agregarprofesor.php"><button>agregar profesor</button></a>
     <a href="../php/agregararbitro.php"><button>agregar arbitro</button></a>
     <!-- Agrega un botón para abrir el modal de confirmación -->
     <button id="openModal" style="background-color: #FF0000; color: #fff;">Cerrar Sesión</button>

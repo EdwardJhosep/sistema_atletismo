@@ -64,14 +64,14 @@ $result = $conn->query($sql);
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="icon" href="https://www.shutterstock.com/image-vector/initial-letter-ap-logo-design-260nw-2343832111.jpg" type="image/png">
+    <link rel="icon" href="https://www.shutterstock.com/image-vector/initial-letter-ap-logo-design-260nw-2343832111.jpg" type="image/png">
     <title>Asignar Horas Personalizadas</title>
+    <!-- Enlace a Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f5f5f5;
-            margin: 0;
-            padding: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -83,52 +83,38 @@ $result = $conn->query($sql);
             text-align: center;
         }
 
+        /* Estilos para el formulario */
         form {
-            width: 50%;
-            margin: 0 auto;
+            width: 80%; /* Ancho del formulario */
+            max-width: 600px; /* Ancho máximo en dispositivos móviles */
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 5px;
         }
 
-        select,
-        input[type="datetime-local"],
-        input[type="password"],
-        input[type="submit"] {
-            display: block;
-            margin: 10px 0;
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
+        /* Estilo para el botón de enviar */
         input[type="submit"] {
             background-color: #007BFF;
             color: #fff;
-            cursor: pointer;
         }
 
         input[type="submit"]:hover {
             background-color: #0056b3;
         }
 
+        /* Estilo para el botón de Volver */
         a {
-            display: inline-block;
             text-decoration: none;
             background-color: #FF0000;
             color: #fff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            margin-right: 10px;
         }
 
         a:hover {
             background-color: #CC0000;
         }
 
-        .success {
-            background-color: #4CAF50;
+        /* Estilos para los mensajes de éxito y error */
+        .success, .error {
             color: #fff;
             padding: 10px;
             border-radius: 5px;
@@ -136,40 +122,52 @@ $result = $conn->query($sql);
             margin-top: 10px;
         }
 
+        .success {
+            background-color: #4CAF50;
+        }
+
         .error {
             background-color: #FF0000;
-            color: #fff;
-            padding: 10px;
-            border-radius: 5px;
-            text-align: center;
-            margin-top: 10px;
         }
+        
     </style>
 </head>
 <body>
     <h2>Árbitros:</h2>
-    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
-        <select name="arbitro">
-            <?php
-            while ($row = $result->fetch_assoc()) {
-                echo "<option value='" . $row['arbitro_id'] . "'>" . $row['nombre'] . " " . $row['apellido'] . "</option>";
-            }
-            ?>
-        </select>
-        <label for="hora_inicio">Hora de inicio personalizada:</label>
-        <input type="datetime-local" name="hora_inicio">
-        <label for="hora_cierre">Hora de cierre personalizada:</label>
-        <input type="datetime-local" name="hora_cierre">
-        
+    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" class="p-4">
+        <div class="form-group">
+            <label for="arbitro">Árbitro:</label>
+            <select class="form-control" name="arbitro">
+                <?php
+                while ($row = $result->fetch_assoc()) {
+                    echo "<option value='" . $row['arbitro_id'] . "'>" . $row['nombre'] . " " . $row['apellido'] . "</option>";
+                }
+                ?>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="hora_inicio">Hora de inicio personalizada:</label>
+            <input type="datetime-local" class="form-control" name="hora_inicio">
+        </div>
+        <div class="form-group">
+            <label for "hora_cierre">Hora de cierre personalizada:</label>
+            <input type="datetime-local" class="form-control" name="hora_cierre">
+        </div>
         <!-- Campo de contraseña del administrador -->
-        <label for="contrasena_admin">Contraseña de administrador:</label>
-        <input type="password" name="contrasena_admin">
-        
-        <input type="submit" value="Asignar Horas">
-        <a href="../usuarios/users.php">Volver</a>
+        <div class="form-group">
+            <label for="contrasena_admin">Contraseña de administrador:</label>
+            <input type="password" class="form-control" name="contrasena_admin">
+        </div>
+        <button type="submit" class="btn btn-primary">Asignar Horas</button>
+        <a href="../usuarios/users.php" class="btn btn-danger">Volver</a>
     </form>
+    <!-- Enlace a Bootstrap JS (opcional) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
+
 
 <?php
 // Cierra la conexión a la base de datos

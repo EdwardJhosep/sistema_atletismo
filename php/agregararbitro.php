@@ -43,6 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $apellido = $_POST['apellido'];
         $dni = $_POST['dni'];
         $contrasena = $_POST['contrasena'];
+        $nivel = $_POST['nivel'];
 
         // Prepara la consulta SQL para insertar un nuevo árbitro
         $sql = "INSERT INTO arbitros (nombre, apellido, dni, usuario, contrasena) VALUES (?, ?, ?, ?, ?)";
@@ -50,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Prepara la declaración
         if ($stmt = $conn->prepare($sql)) {
             // Vincula los parámetros y establece sus valores
-            $stmt->bind_param("sssss", $nombre, $apellido, $dni, $usuario, $contrasena);
+            $stmt->bind_param("sssss", $nombre, $apellido, $dni, $usuario, $contrasena,$nivel);
 
             // Ejecuta la consulta
             if ($stmt->execute()) {
@@ -76,93 +77,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agregar Profesor</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-        }
-
-        .container {
-            width: 80%;
-            margin: 0 auto;
-            overflow: hidden;
-        }
-
-        form {
-            background: #fff;
-            padding: 20px;
-            border: 1px solid #d1d1d1;
-            border-radius: 5px;
-            margin: 20px 0;
-        }
-
-        h2 {
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            font-weight: bold;
-            margin: 10px 0;
-        }
-
-        input[type="text"],
-        input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-        }
-
-        input[type="submit"] {
-            background: #333;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-        }
-
-        input[type="submit"]:hover {
-            background: #555;
-        }
-
-        .btn-volver {
-            background: #007bff;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 10px;
-            border-radius: 3px;
-        }
-
-        .btn-volver:hover {
-            background: #0056b3;
-        }
-    </style>
+    <!-- Agregar el enlace a Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
 
-    <h2>Agregar profesor</h2>
+<div class="container">
+    <h2 class="mt-4">Agregar profesor</h2>
     <form action="agregararbitro.php" method="POST">
-        <label for="nombre">Nombre:</label>
-        <input type="text" name="nombre" required><br>
+        <div class="form-group">
+            <label for="nombre">Nombre:</label>
+            <input type="text" class="form-control" name="nombre" required>
+        </div>
 
-        <label for="apellido">Apellido:</label>
-        <input type="text" name="apellido" required><br>
+        <div class="form-group">
+            <label for="apellido">Apellido:</label>
+            <input type="text" class="form-control" name="apellido" required>
+        </div>
 
-        <label for="dni">DNI:</label>
-        <input type="text" name="dni" required><br>
+        <div class="form-group">
+            <label for="dni">DNI:</label>
+            <input type="text" class="form-control" name="dni" required>
+        </div>
 
-        <label for="contrasena">Contraseña:</label>
-        <input type="password" name="contrasena" required><br>
+        <div class="form-group">
+            <label for="contrasena">Contraseña:</label>
+            <input type="password" class="form-control" name="contrasena" required>
+        </div>
 
-        <input type="submit" value="Agregar Árbitro">
-        <a class="btn-volver" href="../usuarios/users.php">Volver</a>
+        <div class="form-group">
+            <label for="nivel">Nivel:</label>
+            <input type="nivel" class="form-control" name="nivel" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Agregar Profesor</button>
     </form>
+    <a class="btn btn-secondary mt-3" href="../usuarios/users.php">Volver</a>
+</div>
+
+<!-- Agregar el enlace a Bootstrap JS y jQuery (opcional) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

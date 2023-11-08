@@ -62,6 +62,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <script>
     document.getElementById('backButton').addEventListener('click', function() {
         // Redirige de vuelta al formulario de inicio de sesión
-        window.location.href = '../login/login2.html';
+        window.location.href = '../login/login.html';
     });
 </script>
