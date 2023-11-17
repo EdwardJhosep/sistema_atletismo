@@ -43,6 +43,7 @@ if (!isset($_SESSION['usuario'])) {
                     tiempoSesion--;
                     setTimeout(actualizarContador, 1000);
                 }
+
             }
 
             actualizarContador();
@@ -82,7 +83,7 @@ window.onfocus = function() {
         /* Estilos para encabezado */
         header {
             background-color: #333;
-            color: #fff;
+            color: #333;
             padding: 10px 0;
             text-align: center;
         }
@@ -102,21 +103,34 @@ window.onfocus = function() {
 
         /* Estilos para el texto */
         h2 {
-            font-size: 24px;
+            text-align: center;
             color: #333;
         }
 
         p {
             font-size: 16px;
-            color: #666;
+            color: #333;
         }
 
-        /* Estilo para el texto "Tiempo restante" */
-        #contador {
-            text-align: right; /* Alinea el texto a la derecha */
-            font-size: 16px; /* Tamaño de fuente */
-            color: #333; /* Color del texto */
-        }
+        #container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    h2 {
+        color: #333;
+    }
+
+    #contador {
+        font-size: 24px;
+        color: #DF0101;
+    }
 
         /* Estilo para el botón principal */
         button {
@@ -153,14 +167,28 @@ window.onfocus = function() {
             font-size: 18px;
             color: #333;
         }
+        #container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 32px;
+            color: #FFFFFF;
+            text-align: center;
+        }
+
+
 </style>
 </head>
 <body>
 <header>
         <h1>PANEL DEL ARBITRO</h1>
     </header>
+    <br><br>
     <div id="container" class="content">
-        <h2>Árbitros:</h2>
+        <h2>RECUERDA QUE PASADO EL TIEMPO SE TE ECHARA DE LA SESIÓN</h2>
         <p>Tiempo restante : <span id="contador"></span></p>
         <!-- Agrega un botón para abrir el modal de confirmación -->
         <button id="openModal">Cerrar Sesión</button>
@@ -190,5 +218,15 @@ window.onfocus = function() {
             modal.style.display = 'none';
         });
     </script>
+    <!-- Agrega este código donde deseas colocar el botón de filtrar -->
+    <BR>
+    <BR>
+    <div id="container" class="content">
+        <h2 >Agrega Informacion Segun las categorias </h2>
+        <a href="../categoria/editar_categoriaA.php"><button>Editar Categoría A</button></a>
+        <a href="../categoria/editar_categoriaB.php"><button>Editar Categoría B</button></a>
+        <a href="../categoria/editar_categoriaC.php"><button>Editar Categoría C</button></a>
+    </div>
+
 </body>
 </html>

@@ -50,12 +50,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $nombre = $_POST['nombre'];
                 $apellido = $_POST['apellido'];
                 $nivel = $_POST['nivel'];
-                $password = $_POST['contrasena'];
 
                 // Verifica si se proporcionó una nueva contraseña
-                if (!empty($password)) {
+                if (!empty($_POST['contrasena'])) {
                     // Hashea la contraseña
-                    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+                    $hashed_password = password_hash($_POST['contrasena'], PASSWORD_DEFAULT);
 
                     // Prepara la consulta SQL para actualizar el árbitro con la nueva contraseña y sin cambiar el DNI (ajusta según tu esquema de base de datos)
                     $sql = "UPDATE arbitros SET nombre = ?, apellido = ?, contrasena = ?, nivel = ? WHERE usuario = ?";
@@ -78,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         echo "Error en la preparación de la consulta: " . $conn->error;
                     }
                 } else {
-                    // No se proporcionó una nueva contraseña, actualiza sin cambiar la contraseña y sin cambiar el DNI
+                    // No se proporcionó una nueva contraseña, actualiza sin cambiar la contraseña
                     $sql = "UPDATE arbitros SET nombre = ?, apellido = ?, nivel = ? WHERE usuario = ?";
 
                     // Prepara la declaración
@@ -141,7 +140,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 $conn->close();
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -183,25 +181,20 @@ $conn->close();
             <input type="text" class="form-control" name="apellido" required>
         </div>
 
-
-        <div class="form-group">
-            <label for="contrasena">Contraseña:</label>
-            <input type="password" class="form-control" name="contrasena" required>
-        </div>
-
         <div class="form-group">
             <label for="nivel">Nivel:</label>
             <input type="text" class="form-control" name="nivel" required>
         </div>
+        
         <div class="form-group">
-    <label for="admin_password">Contraseña del Administrador:</label>
-    <input type="password" class="form-control" name="admin_password" required>
-</div>
+            <label for="admin_password">Contraseña del Administrador:</label>
+            <input type="password" class="form-control" name="admin_password" required>
+        </div>
+
         <button type="submit" class="btn btn-primary" name="editar_arbitro">Guardar Cambios</button>
         <a href="../usuarios/users.php" class="btn btn-danger">Volver</a>
     </form>
 </div>
-
 
 <!-- Agregar el enlace a Bootstrap JS y jQuery (opcional) -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

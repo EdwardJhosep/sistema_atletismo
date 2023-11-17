@@ -84,10 +84,12 @@ input[type="submit"] {
         <input type="text" name="telefono" id="telefono" required>
         <br>
         <br>
+        <input type="submit" name="guardar_solicitud" value="Guardar Solicitud">
+        <br>
+        <br>
         <a href="../login/login.html" class="btn btn-danger">Volver</a>
         <br>
-        <br>
-        <input type="submit" name="guardar_solicitud" value="Guardar Solicitud">
+        <p style="text-align: center;">Por medidas de seguridad no podemos promorcionarle recuperacion inmediata de la contraseña.</p>
     </form>
 
     <?php
