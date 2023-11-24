@@ -269,8 +269,8 @@ window.onfocus = function() {
         <h2>RECUERDA QUE PASADO EL TIEMPO SE TE ECHARA DE LA SESIÓN</h2>
         <p>Tiempo restante : <span id="contador"></span></p>
     </div>
-<div class="text-center">
-    <a class="btn btn-secondary mt-3" href="../usuarios/arbitro.php" style="background-color: red; border-color: red; color: white;">Volver</a>
+    <div class="text-center">
+    <a class="btn btn-secondary mt-3" href="../usuarios/arbitro.php" style="background-color: green; border-color: green; color: white;">Volver al menú </a>
 </div>
 
 <div class="container">
@@ -328,41 +328,39 @@ window.onfocus = function() {
 
 <br><br>
 <br><br><br><br>
-<h1>Eliminar atletas de las competencias </h1>
-<br><br>
-<form method="post" action="<?php echo $_SERVER["PHP_SELF"]; ?>" class="mb-4">
-    <div class="form-row">
-        <div class="col-md-4">
-            <label for="eliminar_dni">Ingrese DNI a eliminar:</label>
-            <input type="text" id="eliminar_dni" name="eliminar_dni" class="form-control" required>
-        </div>
-
-        <div class="col-md-4">
-            <label for="tabla_eliminar">Seleccione La Categoría para Eliminar:</label>
-            <select id="tabla_eliminar" name="tabla_eliminar" class="form-control" required>
-                <option value="Resultados_80MetrosPlanos_CB">80MetrosPlanos</option>
-                <option value="Resultados_150MetrosPlanos_CB">150MetrosPlanos</option>
-                <option value="Resultados_800MetrosPlanos_CB">800MetrosPlanos</option>
-                <option value="Resultados_2000MetrosPlanos_CB">2000MetrosPlanos</option>
-                <option value="Resultados_80MetrosVallas_CB">80MetrosVallas</option>
-                <option value="Resultados_100MetrosVallas_CB">100MetrosVallas</option>
-                <option value="Resultados_3KmMarcha_CB">3KmMarcha</option>
-                <option value="Resultados_5KmMarcha_CB">5KmMarcha</option>
-                <option value="Resultados_LanzamientoJabalina500g_CB">LanzamientoJabalina500g</option>
-                <option value="Resultados_LanzamientoJabalina600g_CB">LanzamientoJabalina600g</option>
-                <option value="Resultados_ImpulsionBala3Kg_CB">ImpulsionBala3Kg</option>
-                <option value="Resultados_ImpulsionBala4Kg_CB">ImpulsionBala4Kg</option>
-                <option value="Resultados_LanzamientoDisco750g_CB">LanzamientoDisco750g</option>
-                <option value="Resultados_LanzamientoDisco1Kg_CB">LanzamientoDisco1Kg</option>
-                <option value="Resultados_LanzamientoMartillo3Kg_CB">LanzamientoMartillo3Kg</option>
-                <option value="Resultados_LanzamientoMartillo4Kg_CB">LanzamientoMartillo4Kg</option>
-                <option value="Resultados_SaltoLargoImpulso_CB">SaltoLargoImpulso</option>
-                <option value="Resultados_SaltoAlto_CB">SaltoAlto</option>
-                <option value="Resultados_SaltoGarrocha_CB">SaltoGarrocha</option>
-            
-            </select>
-        </div>
-        <div class="col-md-4">
+<div class="container mt-5">
+    <h1 class="text-center">Eliminar Atletas de las Competencias</h1>
+    <form method="post" action="<?php echo $_SERVER["PHP_SELF"]; ?>" class="mb-4">
+        <div class="form-row">
+            <div class="col-md-4 mb-3">
+                <label for="eliminar_dni">Ingrese DNI a eliminar:</label>
+                <input type="text" id="eliminar_dni" name="eliminar_dni" class="form-control" required>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="tabla_eliminar">Seleccione La Categoría para Eliminar:</label>
+                <select id="tabla_eliminar" name="tabla_eliminar" class="form-control" required>
+                    <option value="Resultados_80MetrosPlanos_CB">80MetrosPlanos</option>
+                    <option value="Resultados_150MetrosPlanos_CB">150MetrosPlanos</option>
+                    <option value="Resultados_800MetrosPlanos_CB">800MetrosPlanos</option>
+                    <option value="Resultados_2000MetrosPlanos_CB">2000MetrosPlanos</option>
+                    <option value="Resultados_80MetrosVallas_CB">80MetrosVallas</option>
+                    <option value="Resultados_100MetrosVallas_CB">100MetrosVallas</option>
+                    <option value="Resultados_3KmMarcha_CB">3KmMarcha</option>
+                    <option value="Resultados_5KmMarcha_CB">5KmMarcha</option>
+                    <option value="Resultados_LanzamientoJabalina500g_CB">LanzamientoJabalina500g</option>
+                    <option value="Resultados_LanzamientoJabalina600g_CB">LanzamientoJabalina600g</option>
+                    <option value="Resultados_ImpulsionBala3Kg_CB">ImpulsionBala3Kg</option>
+                    <option value="Resultados_ImpulsionBala4Kg_CB">ImpulsionBala4Kg</option>
+                    <option value="Resultados_LanzamientoDisco750g_CB">LanzamientoDisco750g</option>
+                    <option value="Resultados_LanzamientoDisco1Kg_CB">LanzamientoDisco1Kg</option>
+                    <option value="Resultados_LanzamientoMartillo3Kg_CB">LanzamientoMartillo3Kg</option>
+                    <option value="Resultados_LanzamientoMartillo4Kg_CB">LanzamientoMartillo4Kg</option>
+                    <option value="Resultados_SaltoLargoImpulso_CB">SaltoLargoImpulso</option>
+                    <option value="Resultados_SaltoAlto_CB">SaltoAlto</option>
+                    <option value="Resultados_SaltoGarrocha_CB">SaltoGarrocha</option>
+                </select>
+            </div>
+            <div class="col-md-4 mb-3">
                 <label for="nivel_eliminar">Seleccione Etapa:</label>
                 <select id="nivel_eliminar" name="nivel_eliminar" class="form-control" required>
                     <option value="DISTRITAL">DISTRITAL</option>
@@ -370,60 +368,61 @@ window.onfocus = function() {
                     <option value="REGIONAL">REGIONAL</option>
                 </select>
             </div>
-        <div class="col-md-4">
-            <button type="submit" class="btn btn-danger mt-4">Eliminar Atleta</button>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-danger mt-4">Eliminar Atleta</button>
+            </div>
         </div>
+    </form>
+
+    <div class="text-center">
+        <a class="btn btn-secondary mt-3" href="../categoria/editar_categoriaBgrupales.php">Agregar Pentatlón, Hexatlón y Relevo 5 x 80 Metros</a>
     </div>
-</form>
-<br>
-<br>
-<div class="text-center">
-    <a class="btn btn-secondary mt-3" href="../categoria/editar_categoriaBgrupales.php"> Agregar Pentatlón,HexatlónyRelevo 5 x 80 Metros  </a>
+
+    <h1 class="mt-5 text-center">Mostrar Información de las Competencias</h1>
+    <form method="post" action="<?php echo $_SERVER["PHP_SELF"]; ?>" class="mb-4">
+        <div class="form-row">
+            <div class="col-md-4 mb-3">
+                <label for="tabla_mostrar">Seleccione Tabla para Mostrar:</label>
+                <select id="tabla_mostrar" name="tabla_mostrar" class="form-control" required>
+                    <option value="Resultados_80MetrosPlanos_CB">80MetrosPlanos</option>
+                    <option value="Resultados_150MetrosPlanos_CB">150MetrosPlanos</option>
+                    <option value="Resultados_800MetrosPlanos_CB">800MetrosPlanos</option>
+                    <option value="Resultados_2000MetrosPlanos_CB">2000MetrosPlanos</option>
+                    <option value="Resultados_80MetrosVallas_CB">80MetrosVallas</option>
+                    <option value="Resultados_100MetrosVallas_CB">100MetrosVallas</option>
+                    <option value="Resultados_3KmMarcha_CB">3KmMarcha</option>
+                    <option value="Resultados_5KmMarcha_CB">5KmMarcha</option>
+                    <option value="Resultados_LanzamientoJabalina500g_CB">LanzamientoJabalina500g</option>
+                    <option value="Resultados_LanzamientoJabalina600g_CB">LanzamientoJabalina600g</option>
+                    <option value="Resultados_ImpulsionBala3Kg_CB">ImpulsionBala3Kg</option>
+                    <option value="Resultados_ImpulsionBala4Kg_CB">ImpulsionBala4Kg</option>
+                    <option value="Resultados_LanzamientoDisco750g_CB">LanzamientoDisco750g</option>
+                    <option value="Resultados_LanzamientoDisco1Kg_CB">LanzamientoDisco1Kg</option>
+                    <option value="Resultados_LanzamientoMartillo3Kg_CB">LanzamientoMartillo3Kg</option>
+                    <option value="Resultados_LanzamientoMartillo4Kg_CB">LanzamientoMartillo4Kg</option>
+                    <option value="Resultados_SaltoLargoImpulso_CB">SaltoLargoImpulso</option>
+                    <option value="Resultados_SaltoAlto_CB">SaltoAlto</option>
+                    <option value="Resultados_SaltoGarrocha_CB">SaltoGarrocha</option>
+                </select>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="categoria_mostrar">Seleccione Etapa:</label>
+                <select id="categoria_mostrar" name="categoria_mostrar" class="form-control" required>
+                    <option value="DISTRITAL">DISTRITAL</option>
+                    <option value="PROVINCIAL">PROVINCIAL</option>
+                    <option value="REGIONAL">REGIONAL</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-success mt-4">Mostrar Resultados</button>
+            </div>
+        </div>
+    </form>
 </div>
-<br>
-<br>
-<h1>Mostrar información de las competencias</h1>
-<form method="post" action="<?php echo $_SERVER["PHP_SELF"]; ?>" class="mb-4">
-    <div class="form-row">
-        <div class="col-md-4">
-            <label for="tabla_mostrar">Seleccione Tabla para Mostrar:</label>
-            <select id="tabla_mostrar" name="tabla_mostrar" class="form-control" required>
-                <option value="Resultados_80MetrosPlanos_CB">80MetrosPlanos</option>
-                <option value="Resultados_150MetrosPlanos_CB">150MetrosPlanos</option>
-                <option value="Resultados_800MetrosPlanos_CB">800MetrosPlanos</option>
-                <option value="Resultados_2000MetrosPlanos_CB">2000MetrosPlanos</option>
-                <option value="Resultados_80MetrosVallas_CB">80MetrosVallas</option>
-                <option value="Resultados_100MetrosVallas_CB">100MetrosVallas</option>
-                <option value="Resultados_3KmMarcha_CB">3KmMarcha</option>
-                <option value="Resultados_5KmMarcha_CB">5KmMarcha</option>
-                <option value="Resultados_LanzamientoJabalina500g_CB">LanzamientoJabalina500g</option>
-                <option value="Resultados_LanzamientoJabalina600g_CB">LanzamientoJabalina600g</option>
-                <option value="Resultados_ImpulsionBala3Kg_CB">ImpulsionBala3Kg</option>
-                <option value="Resultados_ImpulsionBala4Kg_CB">ImpulsionBala4Kg</option>
-                <option value="Resultados_LanzamientoDisco750g_CB">LanzamientoDisco750g</option>
-                <option value="Resultados_LanzamientoDisco1Kg_CB">LanzamientoDisco1Kg</option>
-                <option value="Resultados_LanzamientoMartillo3Kg_CB">LanzamientoMartillo3Kg</option>
-                <option value="Resultados_LanzamientoMartillo4Kg_CB">LanzamientoMartillo4Kg</option>
-                <option value="Resultados_SaltoLargoImpulso_CB">SaltoLargoImpulso</option>
-                <option value="Resultados_SaltoAlto_CB">SaltoAlto</option>
-                <option value="Resultados_SaltoGarrocha_CB">SaltoGarrocha</option>
-            </select>
-        </div>
 
-        <div class="col-md-4">
-            <label for="categoria_mostrar">Seleccione Etapa:</label>
-            <select id="categoria_mostrar" name="categoria_mostrar" class="form-control" required>
-                <option value="DISTRITAL">DISTRITAL</option>
-                <option value="PROVINCIAL">PROVINCIAL</option>
-                <option value="REGIONAL">REGIONAL</option>
-            </select>
-        </div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-        <div class="col-md-4">
-            <button type="submit" class="btn btn-success mt-4">Mostrar Resultados</button>
-        </div>
-    </div>
-</form>
 
 <br>
 <br>

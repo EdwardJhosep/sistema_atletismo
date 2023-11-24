@@ -1,5 +1,21 @@
 <?php
-// Conexión a la base de datos
+session_start();
+
+if (isset($_POST['logout'])) {
+    // Destruye la sesión primero
+    session_destroy();
+
+    // Luego, redirige al usuario a la página de inicio de sesión
+    header("Location: ../login/login.html");
+    exit();
+}
+
+if (!isset($_SESSION['usuario'])) {
+    header("Location: ../login/login.html");
+    exit();
+}
+
+// Conexión a la base de datos (reemplaza con tus propios datos)
 $db_host = "localhost";
 $db_user = "root";
 $db_pass = "";
@@ -338,8 +354,8 @@ label {
         <p>Tiempo restante: <span id="contador"></span></p>
     </div>
     <div class="text-center">
-        <a class="btn btn-secondary mt-3" href="../usuarios/arbitro.php" style="background-color: red; border-color: red; color: white;">Volver</a>
-    </div>
+    <a class="btn btn-secondary mt-3" href="../usuarios/arbitro.php" style="background-color: green; border-color: green; color: white;">Volver al menú </a>
+</div>
 </div>
 
 <div class="container">

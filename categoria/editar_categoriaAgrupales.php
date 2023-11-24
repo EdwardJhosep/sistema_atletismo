@@ -396,7 +396,7 @@ window.onfocus = function() {
         <p>Tiempo restante : <span id="contador"></span></p>
     </div>
     <div class="text-center">
-    <a class="btn btn-secondary mt-3" href="../usuarios/arbitro.php" style="background-color: red; border-color: red; color: white;">Volver</a>
+    <a class="btn btn-secondary mt-3" href="../usuarios/arbitro.php" style="background-color: green; border-color: green; color: white;">Volver al menú </a>
 </div>
 <div class="container">
         <h2 class="mb-4">Agregar Relevo 4 x 50 Metros</h2>

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,14 +34,77 @@
         <li><a href="../index.html">INICIO</a></li>
         <li><a href="../login/admin.html">ADMIN</a></li>
         <li><a href="../login/login.html">INICIAR encargado</a></li>
-        <li><a href="torneo.html">TORNEO</a></li>
         <li><a href="calendario.html">CALENDARIO</a></li>
         <li><a href="atletas.html">ATLETAS</a></li>
-        <li><a href="rankings.html">RANKINGS</a></li>
+        <li><a href="rankings.php">RANKINGS</a></li>
       </ul>
     </div>
   </div>
     </nav>
+    <BR><BR><BR><BR><BR>
+    <?php
+// Configuración de la conexión a la base de datos
+$db_host = "localhost";
+$db_user = "root";
+$db_pass = "";
+$db_name = "atletismo";
+
+// Crear la conexión
+$conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
+
+// Verificar errores en la conexión
+if ($conn->connect_error) {
+    die("La conexión a la base de datos ha fallado: " . $conn->connect_error);
+}
+
+// Definir las terminaciones permitidas
+$terminacionesPermitidas = ['ca', 'cb', 'cc'];
+
+// Obtener la terminación seleccionada por el usuario
+$terminacionSeleccionada = isset($_POST["terminacion"]) ? $_POST["terminacion"] : null;
+$tablaSeleccionada = isset($_POST["tabla"]) ? $_POST["tabla"] : null;
+// Mostrar formulario inicial
+echo "<div class='container form-container'>
+        <form action='' method='post'>
+            <div class='form-group'>
+                <label for='terminacion'>Seleccione la terminación:</label>
+                <select name='terminacion' id='terminacion' class='form-control'>
+                    <option value='ca'>CATEGORIA A</option>
+                    <option value='cb'>CATEGORIA B</option>
+                    <option value='cc'>CATEGORIA B</option>
+                </select>
+            </div>
+        </form>
+    </div>";
+// Mostrar el formulario para seleccionar una tabla
+if ($terminacionSeleccionada !== null && in_array($terminacionSeleccionada, $terminacionesPermitidas)) {
+  echo "<div class='container form-container'>
+          <form action='' method='post'>
+              <div class='form-group'>
+                  <label for='tabla'>Seleccione la tabla:</label>
+                  <select name='tabla' id='tabla' class='form-control'>
+                      <option value='' selected disabled>Seleccione una tabla</option>";
+
+  // Obtener todas las tablas que coinciden con la terminación seleccionada
+  $result = $conn->query("SHOW TABLES LIKE '%$terminacionSeleccionada%'");
+  while ($row = $result->fetch_row()) {
+      $tabla = $row[0];
+      echo "<option value='$tabla'>$tabla</option>";
+  }
+
+  echo "</select>
+              </div>
+              <button type='submit' class='btn btn-primary'>Mostrar Tablas</button>
+      </div>";
+} else {
+  // Mostrar mensaje si no hay tablas seleccionadas
+  echo "<p>Seleccione una terminación para mostrar las tablas.</p>";
+}
+// Cerrar la conexión
+$conn->close();
+?>
+
+
     <BR><BR><BR><BR><BR>
         <!-- Panel de Publicidad con imágenes -->
         <div class="publicidad" style="text-align: center; padding: 20px;">
@@ -125,7 +189,5 @@
               </div>
           </div>
         </footer>
-        
-
 </body>
 </html>

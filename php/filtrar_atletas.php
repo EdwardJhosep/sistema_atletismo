@@ -50,10 +50,9 @@
                     <li class="active"><a href="../index.html">INICIO <span class="sr-only">(current)</span></a></li>
                     <li><a href="../login/admin.html">ADMIN</a></li>
                     <li><a href="../login/login.html">INICIAR encargado</a></li>
-                    <li><a href="../menu/torneo.html">TORNEO</a></li>
                     <li><a href="../menu/calendario.html">CALENDARIO</a></li>
                     <li><a href="../menu/atletas.html">ATLETAS</a></li>
-                    <li><a href="../menu/rankings.html">RANKINGS</a></li>
+                    <li><a href="../menu/rankings.php">RANKINGS</a></li>
                 </ul>
             </div>
         </div>
@@ -94,6 +93,7 @@
 
         mysqli_close($conexion);
     }
+    
     ?>
 
     <!-- Panel de Publicidad -->
@@ -121,6 +121,5 @@
         <p style="text-align: center;">© Todos los derechos reservados. Desarrollado por EDWARD JUANANTE RODRIGUEZ</p>
 
 </footer>
-
 </body>
 </html>

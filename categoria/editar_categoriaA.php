@@ -259,8 +259,8 @@ window.onfocus = function() {
         <h2>RECUERDA QUE PASADO EL TIEMPO SE TE ECHARA DE LA SESIÓN</h2>
         <p>Tiempo restante : <span id="contador"></span></p>
     </div>
-<div class="text-center">
-    <a class="btn btn-secondary mt-3" href="../usuarios/arbitro.php" style="background-color: red; border-color: red; color: white;">Volver</a>
+    <div class="text-center">
+    <a class="btn btn-secondary mt-3" href="../usuarios/arbitro.php" style="background-color: green; border-color: green; color: white;">Volver al menú </a>
 </div>
 
 <div class="container">

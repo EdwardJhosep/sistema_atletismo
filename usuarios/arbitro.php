@@ -220,13 +220,24 @@ window.onfocus = function() {
     </script>
     <!-- Agrega este código donde deseas colocar el botón de filtrar -->
     <BR>
-    <BR>
     <div id="container" class="content">
-        <h2 >Agrega Informacion Segun las categorias </h2>
-        <a href="../categoria/editar_categoriaA.php"><button>Editar Categoría A</button></a>
-        <a href="../categoria/editar_categoriaB.php"><button>Editar Categoría B</button></a>
-        <a href="../categoria/editar_categoriaC.php"><button>Editar Categoría C</button></a>
-    </div>
-
+    <h2>Agrega resultados</h2>
+    <a href="../editar/aditarCA.php"><button style="background-color: #0FA29B; border-color: #0FA29B;">agregar Categoría A</button></a>
+    <a href="../editar/aditarCB.php"><button style="background-color: #0FA29B; border-color: #0FA29B;">agregar Categoría B</button></a>
+    <a href="../editar/aditarCC.php"><button style="background-color: #0FA29B; border-color: #0FA29B;">agregar Categoría C</button></a>
+</div>
+<BR>
+<div id="container" class="content">
+    <h2>Agrega atleta a las competencias</h2>
+    <a href="../categoria/editar_categoriaA.php"><button style="background-color: green; border-color: green;">Editar Categoría A</button></a>
+    <a href="../categoria/editar_categoriaB.php"><button style="background-color: green; border-color: green;">Editar Categoría B</button></a>
+    <a href="../categoria/editar_categoriaC.php"><button style="background-color: green; border-color: green;">Editar Categoría C</button></a>
+</div>
+<br>
+<br>
+<div id="container" class="content">
+    <h2>Agrega atleta</h2>
+    <a href="../categoria/agregaratleta.php"><button style="background-color: blue; border-color: blue;">AGREGAR ATLETA</button></a>
+</div>
 </body>
 </html>
