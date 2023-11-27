@@ -57,53 +57,96 @@ if ($conn->connect_error) {
     die("La conexión a la base de datos ha fallado: " . $conn->connect_error);
 }
 
-// Definir las terminaciones permitidas
-$terminacionesPermitidas = ['ca', 'cb', 'cc'];
+// Verificar si se ha enviado el formulario
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
+    // Realizar la consulta
+    $sql = "SELECT r.*, a.genero
+            FROM resultados_80metrosplanos_cb r
+            JOIN atletas a ON r.DNI_Atleta = a.dni
+            WHERE r.año = 2023 AND r.Nivel = 'DISTRITAL' AND a.genero = 'M'";
 
-// Obtener la terminación seleccionada por el usuario
-$terminacionSeleccionada = isset($_POST["terminacion"]) ? $_POST["terminacion"] : null;
-$tablaSeleccionada = isset($_POST["tabla"]) ? $_POST["tabla"] : null;
-// Mostrar formulario inicial
-echo "<div class='container form-container'>
-        <form action='' method='post'>
-            <div class='form-group'>
-                <label for='terminacion'>Seleccione la terminación:</label>
-                <select name='terminacion' id='terminacion' class='form-control'>
-                    <option value='ca'>CATEGORIA A</option>
-                    <option value='cb'>CATEGORIA B</option>
-                    <option value='cc'>CATEGORIA B</option>
-                </select>
-            </div>
-        </form>
-    </div>";
-// Mostrar el formulario para seleccionar una tabla
-if ($terminacionSeleccionada !== null && in_array($terminacionSeleccionada, $terminacionesPermitidas)) {
-  echo "<div class='container form-container'>
-          <form action='' method='post'>
-              <div class='form-group'>
-                  <label for='tabla'>Seleccione la tabla:</label>
-                  <select name='tabla' id='tabla' class='form-control'>
-                      <option value='' selected disabled>Seleccione una tabla</option>";
+    $result = $conn->query($sql);
 
-  // Obtener todas las tablas que coinciden con la terminación seleccionada
-  $result = $conn->query("SHOW TABLES LIKE '%$terminacionSeleccionada%'");
-  while ($row = $result->fetch_row()) {
-      $tabla = $row[0];
-      echo "<option value='$tabla'>$tabla</option>";
-  }
+    // Mostrar resultados o mensaje de error
+    if ($result) {
+        if ($result->num_rows > 0) {
+            echo "<div class='container result-container'>
+                    <h2>Resultados</h2>
+                    <table class='table'>
+                        <thead>
+                            <tr>
+                                <th>ID Atleta</th>
+                                <th>DNI Atleta</th>
+                                <th>Resultado</th>
+                                <th>Lugar</th>
+                                <th>Serie</th>
+                                <th>Pista</th>
+                                <th>Nivel</th>
+                                <th>Año</th>
+                                <th>Género</th>
+                            </tr>
+                        </thead>
+                        <tbody>";
 
-  echo "</select>
-              </div>
-              <button type='submit' class='btn btn-primary'>Mostrar Tablas</button>
-      </div>";
-} else {
-  // Mostrar mensaje si no hay tablas seleccionadas
-  echo "<p>Seleccione una terminación para mostrar las tablas.</p>";
+            $hayResultadosNoCero = false;
+
+            // Mostrar cada fila de resultados
+            while ($row = $result->fetch_assoc()) {
+                // Verificar si el resultado es diferente de cero
+                if ($row['Resultado'] != 0) {
+                    $hayResultadosNoCero = true;
+
+                    echo "<tr>
+                            <td>{$row['ID_Atleta']}</td>
+                            <td>{$row['DNI_Atleta']}</td>
+                            <td>{$row['Resultado']}</td>
+                            <td>{$row['Lugar']}</td>
+                            <td>{$row['Serie']}</td>
+                            <td>{$row['Pista']}</td>
+                            <td>{$row['Nivel']}</td>";
+
+                    // Verificar si la clave 'Año' existe antes de mostrarla
+                    if (isset($row['Año'])) {
+                        echo "<td>{$row['Año']}</td>";
+                    } else {
+                        echo "<td>No disponible</td>";
+                    }
+
+                    echo "<td>{$row['genero']}</td>
+                        </tr>";
+                }
+            }
+
+            echo "</tbody>
+                </table>";
+
+            if (!$hayResultadosNoCero) {
+                echo "<p>Todos los resultados son cero. En proceso...</p>";
+            }
+
+            echo "</div>";
+        } else {
+            echo "<div class='container result-container'>
+                    <p>No se encontraron resultados para los criterios seleccionados.</p>
+                </div>";
+        }
+    } else {
+        echo "Error en la consulta: " . $conn->error;
+    }
 }
+
 // Cerrar la conexión
 $conn->close();
 ?>
 
+<!-- Formulario con el botón para mostrar los resultados -->
+<div class='container form-container'>
+    <form action='<?php echo $_SERVER["PHP_SELF"]; ?>' method='post'>
+        <div class='form-group'>
+            <button type='submit' class='btn btn-primary' name='submit'>Mostrar Resultados</button>
+        </div>
+    </form>
+</div>
 
     <BR><BR><BR><BR><BR>
         <!-- Panel de Publicidad con imágenes -->

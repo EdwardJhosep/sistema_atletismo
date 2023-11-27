@@ -104,30 +104,32 @@ if (isset($_POST['seleccionar_tabla'])) {
 } elseif (isset($_POST['guardar_edicion'])) {
     // Si se envía el formulario de edición, procesar la edición y mostrar el resultado
     $tablaEditar = $_POST['editar_tabla'];
-    $idAtletaEditar = $_POST['editar_idAtleta'];
     $nivelEditar = $_POST['nivel']; // Nuevo campo para almacenar el nivel
 
     // Obtener los datos del formulario de edición
-    $datosActualizados = [];
-    foreach ($_POST as $campo => $valor) {
-        if ($campo !== 'editar_tabla' && $campo !== 'editar_idAtleta' && $campo !== 'guardar_edicion' && $campo !== 'nivel') {
-            $datosActualizados[$campo] = $valor;
+    $editar_idAtletas = $_POST['editar_idAtleta'];
+    $datosActualizados = $_POST['datosActualizados'];
+
+    // Iterar sobre los ID de Atleta y datos actualizados
+    foreach ($editar_idAtletas as $key => $idAtletaEditar) {
+        // Construir la consulta de actualización solo para la fila específica y el nivel actual
+        $update_query = "UPDATE $tablaEditar SET ";
+        foreach ($datosActualizados as $campo => $valores) {
+            $valor = $valores[$key];
+            $update_query .= "$campo = '$valor', ";
+        }
+        $update_query = rtrim($update_query, ", ");
+        $update_query .= " WHERE ID_Atleta = $idAtletaEditar AND Nivel = '$nivelEditar'";
+
+        // Ejecutar la consulta de actualización
+        if ($conn->query($update_query) !== TRUE) {
+            $mensaje = "Error al guardar la edición: " . $conn->error;
+            break; // Detener el bucle si hay un error
         }
     }
 
-    // Construir la consulta de actualización solo para la fila específica y el nivel actual
-    $update_query = "UPDATE $tablaEditar SET ";
-    foreach ($datosActualizados as $campo => $valor) {
-        $update_query .= "$campo = '$valor', ";
-    }
-    $update_query = rtrim($update_query, ", ");
-    $update_query .= " WHERE ID_Atleta = $idAtletaEditar AND Nivel = '$nivelEditar'";
-
-    // Ejecutar la consulta de actualización
-    if ($conn->query($update_query) === TRUE) {
-        $mensaje = "Edición guardada correctamente.";
-    } else {
-        $mensaje = "Error al guardar la edición: " . $conn->error;
+    if (!isset($mensaje)) {
+        $mensaje = "Ediciones guardadas correctamente.";
     }
 
     // Mostrar formulario para seleccionar la tabla a editar
@@ -266,24 +268,30 @@ function mostrarFormularioEdicion($conn, $tabla, $nivel) {
     $result = $conn->query($select_query);
 
     if ($result->num_rows > 0) {
+        echo "<form action='' method='post'>";
+        echo "<input type='hidden' name='editar_tabla' value='$tabla'>";
+        echo "<input type='hidden' name='nivel' value='$nivel'>"; // Pasar el nivel como campo oculto
+
         while ($fila = $result->fetch_assoc()) {
-            echo "<form action='' method='post'>";
-            echo "<input type='hidden' name='editar_tabla' value='$tabla'>";
-            echo "<input type='hidden' name='editar_idAtleta' value='{$fila['ID_Atleta']}'>";
-            echo "<input type='hidden' name='nivel' value='$nivel'>"; // Pasar el nivel como campo oculto
+            echo "<input type='hidden' name='editar_idAtleta[]' value='{$fila['ID_Atleta']}'>"; // Utiliza un array para los ID_Atleta
 
             foreach ($fila as $campo => $valor) {
                 // Agregar readonly a los campos que no deben ser editables
                 $readonly = ($campo == 'ID_Atleta' || $campo == 'DNI_Atleta' || $campo == 'Nivel') ? 'readonly' : '';
                 echo "<div class='mb-3'>
                     <label for='$campo' class='form-label'>$campo:</label>
-                    <input type='text' name='$campo' value='$valor' $readonly class='form-control'>
-                </div>";
-            }
+                    <input type='text' name='datosActualizados[$campo][]' value='$valor' $readonly class='form-control'>
+                   
 
-            echo "<input type='submit' name='guardar_edicion' value='Guardar' class='btn btn-primary btn-custom'>";
-            echo "</form>";
+                </div>";
+       
+            }          echo "<hr style='height: 9px; color: blue; background-color: red;'>";
+
         }
+
+        echo "<input type='submit' name='guardar_edicion' value='Guardar Todo' class='btn btn-primary btn-custom'>";
+        echo "</form>";
+        
     } else {
         echo "<p>No hay datos en la tabla $tabla para el nivel seleccionado</p>";
     }
@@ -293,4 +301,3 @@ function mostrarFormularioEdicion($conn, $tabla, $nivel) {
     </html>";
 }
 ?>
-
