@@ -29,7 +29,7 @@ if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
-function agregarAtleta($dni, $nivel, $tabla) {
+function agregarAtleta($dni, $nivel, $tabla, $fechaCompetencia) {
     global $conn;
 
     // Verificar si el atleta ya tiene registros en los tres niveles
@@ -54,16 +54,17 @@ function agregarAtleta($dni, $nivel, $tabla) {
             $row_atleta = $result_buscar_atleta_general->fetch_assoc();
             $id_atleta = $row_atleta["id"];
             $nombre_atleta = $row_atleta["nombre"];
-
+    
             // Insertar nuevo resultado en la tabla seleccionada
-            $query_insertar_resultado = "INSERT INTO $tabla (ID_Atleta, DNI_Atleta, Resultado, Lugar, Serie, Pista, Nivel)
-                                         VALUES ('$id_atleta', '$dni', 0.0, 0, 0, '', '$nivel')";
+            $query_insertar_resultado = "INSERT INTO $tabla (ID_Atleta, DNI_Atleta, Resultado, Lugar, Serie, Pista, Nivel, Fecha_Competencia)
+                                         VALUES ('$id_atleta', '$dni', 0.0, 0, 0, '', '$nivel', '$fechaCompetencia')";
             $result_insertar_resultado = $conn->query($query_insertar_resultado);
-
+    
             if ($result_insertar_resultado) {
                 echo "Se agregó el atleta con ID: $id_atleta, Nombre: $nombre_atleta, DNI: $dni y Nivel: $nivel a la tabla $tabla.<br>";
             } else {
                 echo "Error al agregar el resultado: " . $conn->error . "<br>";
+            
             }
         } else {
             echo "No se encontró un atleta con DNI: $dni en la tabla atletas.<br>";
@@ -150,16 +151,17 @@ function mostrarResultadosPorCategoria($tabla, $categoria) {
 }
 
 
-// Verificar si se envió el formulario de agregar
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["dni"]) && isset($_POST["nivel"]) && isset($_POST["tabla"])) {
-    // Obtener el DNI, el nivel y la tabla del formulario
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["dni"]) && isset($_POST["nivel"]) && isset($_POST["tabla"]) && isset($_POST["fechaCompetencia"])) {
+    // Obtener el DNI, el nivel, la tabla y la fecha de competencia del formulario
     $dni_ingresado = $_POST["dni"];
     $nivel_ingresado = $_POST["nivel"];
     $tabla_seleccionada = $_POST["tabla"];
+    $fechaCompetencia = $_POST["fechaCompetencia"];  // Agrega esta línea
 
     // Llamar a la función para agregar atleta
-    agregarAtleta($dni_ingresado, $nivel_ingresado, $tabla_seleccionada);
+    agregarAtleta($dni_ingresado, $nivel_ingresado, $tabla_seleccionada, $fechaCompetencia);  // Agrega el parámetro
 }
+
 
 // Verificar si se envió el formulario de eliminar
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["eliminar_dni"]) && isset($_POST["tabla_eliminar"]) && isset($_POST["nivel_eliminar"])) {
@@ -262,7 +264,7 @@ window.onfocus = function() {
         };
     </script>
     <div id="container" class="content">
-    <h1>CATEGORIA B </h1>
+    <h1>CATEGORIA C </h1>
     <BR>
     <BR>
     <BR>
@@ -318,6 +320,11 @@ window.onfocus = function() {
         <option value="Resultados_2000mConObstaculos_CC">2000mConObstaculos</option>
                 </select>
             </div>
+            <div class="col-md-4">
+    <label for="fechaCompetencia">Seleccione la Fecha de Competencia:</label>
+    <input type="date" id="fechaCompetencia" name="fechaCompetencia" class="form-control" required>
+</div>
+
 
             <div class="col-md-4">
                 <button type="submit" class="btn btn-primary mt-4">Agregar Información</button>

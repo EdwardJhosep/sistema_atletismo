@@ -123,7 +123,7 @@ footer a:hover {
                     <li><a href="../login/admin.html">ADMIN</a></li>
                     <li><a href="../login/login.html">INICIAR encargado</a></li>
                     <li><a href="../menu/torneo.html">TORNEO</a></li>
-                    <li><a href="../menu/calendario.html">CALENDARIO</a></li>
+                    <li><a href="../menu/calendario.php">CALENDARIO</a></li>
                     <li><a href="../menu/atletas.html">ATLETAS</a></li>
                     <li><a href="../menu/rankings.php">RANKINGS</a></li>
                 </ul>
@@ -161,7 +161,7 @@ footer a:hover {
             echo "<p class='athlete-1'>Departamento: " . $fila['departamento'] . "</p>";
             echo "<p class='athlete-2'>Provincia: " . $fila['provincia'] . "</p>";
             echo "<p class='athlete-3'>Fecha de Nacimiento: " . $fila['nacimiento'] . "</p>";
-            echo "<p>" . $fila['pais'] . " <img src='https://i.pinimg.com/originals/4b/da/b6/4bdab6a64af4d3e35d2b4d746a14b2c4.jpg' alt='" . $fila['pais'] . " Flag' width='40' height='30'></p>";
+            echo "<p class='athlete-3'>" . $fila['pais'] . " <img src='https://i.pinimg.com/originals/4b/da/b6/4bdab6a64af4d3e35d2b4d746a14b2c4.jpg' alt='" . $fila['pais'] . " Flag' width='40' height='30'></p>";
             echo "</div>";
         } else {
             echo "Atleta no encontrado";

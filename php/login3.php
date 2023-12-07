@@ -30,7 +30,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (password_verify($contrasena, $contrasena_hash)) {
             // Contraseña correcta, inicio de sesión exitoso
             $_SESSION['usuario'] = $usuario;
-            header("Location: ../usuarios/arbitro.php"); // Redirige al panel de control o página de inicio después del inicio de sesión
+
+            // Obtener el ID del árbitro
+            $sql_id = "SELECT arbitro_id FROM arbitros WHERE usuario = ?";
+            if ($stmt_id = $conn->prepare($sql_id)) {
+                $stmt_id->bind_param("s", $usuario);
+                $stmt_id->execute();
+                $stmt_id->bind_result($arbitro_id);
+                $stmt_id->fetch();
+                $stmt_id->close();
+
+                // Redirigir a arbitro.php con el ID del árbitro
+                header("Location: ../usuarios/arbitro.php?id=" . $arbitro_id);
+            } else {
+                echo "Error en la preparación de la consulta para obtener el ID: " . $conn->error;
+            }
         } else {
             // Contraseña incorrecta, inicio de sesión fallido
             echo '<div class="error-message">Inicio de sesión fallido. Verifica tus credenciales.</div>';
@@ -43,9 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $conn->close();
 }
 ?>
-
 <!-- Agrega este código CSS y JavaScript en tu HTML para el diseño y el botón de Aceptar -->
-
 <style>
     .error-message {
         background-color: #f44336;

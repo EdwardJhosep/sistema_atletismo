@@ -69,20 +69,6 @@
 <?php
 session_start();
 
-if (isset($_POST['logout'])) {
-    // Destruye la sesión primero
-    session_destroy();
-
-    // Luego, redirige al usuario a la página de inicio de sesión
-    header("Location: ../login/login.html");
-    exit();
-}
-
-if (!isset($_SESSION['usuario'])) {
-    header("Location: ../login/login.html");
-    exit();
-}
-
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -95,44 +81,109 @@ if ($conn->connect_error) {
 }
 
 if (isset($_POST['seleccionar_tabla'])) {
-    // Si se selecciona la tabla, mostrar el formulario de edición para esa tabla
     $tablaSeleccionada = $_POST['editar_tabla'];
-    $nivelSeleccionado = $_POST['nivel']; // Nuevo campo para almacenar el nivel
+    $nivelSeleccionado = $_POST['nivel'];
     mostrarFormularioEdicion($conn, $tablaSeleccionada, $nivelSeleccionado);
 } elseif (isset($_POST['guardar_edicion'])) {
-    // Si se envía el formulario de edición, procesar la edición y mostrar el resultado
     $tablaEditar = $_POST['editar_tabla'];
-    $idAtletaEditar = $_POST['editar_idAtleta'];
-    $nivelEditar = $_POST['nivel']; // Nuevo campo para almacenar el nivel
+    $nivelEditar = $_POST['nivel'];
 
-    // Obtener los datos del formulario de edición
-    $datosActualizados = [];
-    foreach ($_POST as $campo => $valor) {
-        if ($campo !== 'editar_tabla' && $campo !== 'editar_idAtleta' && $campo !== 'guardar_edicion' && $campo !== 'nivel') {
-            $datosActualizados[$campo] = $valor;
+    // Obtener los índices de los grupos
+    $indicesGrupos = $_POST['grupo_indices'];
+
+    // Iterar sobre los grupos
+    foreach ($indicesGrupos as $indiceGrupo) {
+        // Obtener el ID del Atleta y otros datos del grupo actual
+        $idAtletaEditar = $_POST["editar_idAtleta_$indiceGrupo"];
+        $resultado = $_POST["Resultado_$indiceGrupo"];
+        $lugar = $_POST["Lugar_$indiceGrupo"];
+        $serie = $_POST["Serie_$indiceGrupo"];
+        $pista = $_POST["Pista_$indiceGrupo"];
+        $nivel = $_POST["Nivel_$indiceGrupo"];
+
+        $update_query = "UPDATE $tablaEditar SET 
+            Resultado = '$resultado',
+            Lugar = '$lugar',
+            Serie = '$serie',
+            Pista = '$pista'
+            WHERE ID_Atleta1 = $idAtletaEditar AND Nivel = '$nivelEditar'";
+
+        if ($conn->query($update_query) !== TRUE) {
+            $mensaje = "Error al guardar la edición: " . $conn->error;
+            break; // Detener el bucle si hay un error
         }
     }
 
-    // Construir la consulta de actualización solo para la fila específica y el nivel actual
-    $update_query = "UPDATE $tablaEditar SET ";
-    foreach ($datosActualizados as $campo => $valor) {
-        $update_query .= "$campo = '$valor', ";
-    }
-    $update_query = rtrim($update_query, ", ");
-    $update_query .= " WHERE ID_Atleta1 = $idAtletaEditar AND Nivel = '$nivelEditar'";
-
-    // Ejecutar la consulta de actualización
-    if ($conn->query($update_query) === TRUE) {
-        $mensaje = "Edición guardada correctamente.";
-    } else {
-        $mensaje = "Error al guardar la edición: " . $conn->error;
+    if (!isset($mensaje)) {
+        $mensaje = "Ediciones guardadas correctamente.";
     }
 
-    // Mostrar formulario para seleccionar la tabla a editar
     mostrarFormularioSeleccion($conn, $mensaje);
 } else {
-    // Mostrar formulario para seleccionar la tabla y el nivel a editar
     mostrarFormularioSeleccion($conn);
+}
+
+function mostrarFormularioEdicion($conn, $tabla, $nivel) {
+    echo "<!DOCTYPE html>
+    <html lang='en'>
+    <head>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <title>Your Web App</title>
+        <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css'>
+        <style>
+            body {
+                background-color: #f8f9fa;
+            }
+
+            .container {
+                margin-top: 50px;
+            }
+        </style>
+    </head>
+    <body>";
+
+    $select_query = "SELECT * FROM $tabla WHERE Nivel = '$nivel'";
+    $result = $conn->query($select_query);
+
+    if ($result->num_rows > 0) {
+        echo "<div class='container mt-5'>";
+        $groupCounter = 1; // Counter for group titles
+        while ($fila = $result->fetch_assoc()) {
+            echo "<div class='card mb-3'>
+                    <div class='card-body'>
+                        <h2 class='card-title'>Grupo $groupCounter: Tabla seleccionada: $tabla - Nivel: $nivel</h2>";
+            $groupCounter++;
+
+            echo "<form action='' method='post'>";
+            echo "<input type='hidden' name='editar_tabla' value='$tabla'>";
+            echo "<input type='hidden' name='nivel' value='$nivel'>";
+
+            // Agregar un campo oculto para enviar el índice del grupo
+            echo "<input type='hidden' name='grupo_indices[]' value='$groupCounter'>";
+
+            echo "ID Atleta: <input type='text' name='editar_idAtleta_$groupCounter' value='{$fila['ID_Atleta1']}' readonly class='form-control mb-3'><br>";
+
+            // Mostrar los campos a completar
+            echo "Resultado: <input type='text' name='Resultado_$groupCounter' value='{$fila['Resultado']}' class='form-control mb-3'><br>";
+            echo "Lugar: <input type='text' name='Lugar_$groupCounter' value='{$fila['Lugar']}' class='form-control mb-3'><br>";
+            echo "Serie: <input type='text' name='Serie_$groupCounter' value='{$fila['Serie']}' class='form-control mb-3'><br>";
+            echo "Pista: <input type='text' name='Pista_$groupCounter' value='{$fila['Pista']}' class='form-control mb-3'><br>";
+            echo "Nivel: <input type='text' name='Nivel_$groupCounter' value='{$fila['Nivel']}' readonly class='form-control mb-3'><br>";
+
+            echo "</div>
+                </div>";
+        }
+        echo "<input type='submit' name='guardar_edicion' value='Guardar Todo' class='btn btn-primary btn-custom'>";
+        echo "</form>";
+        echo "</div>";
+    } else {
+        echo "<p>No hay datos en la tabla $tabla para el nivel seleccionado</p>";
+    }
+
+    echo "<script src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js'></script>
+    </body>
+    </html>";
 }
 
 function mostrarFormularioSeleccion($conn, $mensaje = "") {
@@ -180,7 +231,6 @@ function mostrarFormularioSeleccion($conn, $mensaje = "") {
 
         echo "</select>";
 
-        // Agregar campo para seleccionar el nivel
         echo "<label for='nivel'>Seleccione el nivel:</label>
                 <select name='nivel' id='nivel' class='form-select mb-3'>
                     <option value='DISTRITAL'>DISTRITAL</option>
@@ -188,8 +238,8 @@ function mostrarFormularioSeleccion($conn, $mensaje = "") {
                     <option value='REGIONAL'>REGIONAL</option>
                 </select>";
 
-        echo "<input type='submit' name='seleccionar_tabla' value='Seleccionar' class='btn btn-primary'>
-            </form>";
+        echo "<input type='submit' name='seleccionar_tabla' value='Seleccionar' class='btn btn-primary'>";
+        echo "</form>";
     } else {
         echo "<p>No se encontraron tablas en la base de datos</p>";
     }
@@ -204,71 +254,5 @@ function mostrarFormularioSeleccion($conn, $mensaje = "") {
 
     $conn->close();
 }
-
-
-function mostrarFormularioEdicion($conn, $tabla, $nivel) {
-    echo "<!DOCTYPE html>
-    <html lang='en'>
-    <head>
-        <meta charset='UTF-8'>
-        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-        <title>Your Web App</title>
-        <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css'>
-        <style>
-            body {
-                background-color: #f8f9fa;
-            }
-
-            .container {
-                margin-top: 50px;
-            }
-        </style>
-    </head>
-    <body>";
-
-    $select_query = "SELECT * FROM $tabla WHERE Nivel = '$nivel'";
-    $result = $conn->query($select_query);
-
-    if ($result->num_rows > 0) {
-        echo "<div class='container mt-5'>";
-        $groupCounter = 1; // Counter for group titles
-        while ($fila = $result->fetch_assoc()) {
-            echo "<div class='card mb-3'>
-                    <div class='card-body'>
-                        <h2 class='card-title'>Grupo $groupCounter: Tabla seleccionada: $tabla - Nivel: $nivel</h2>";
-            $groupCounter++;
-
-            echo "<form action='' method='post'>";
-            echo "<input type='hidden' name='editar_tabla' value='$tabla'>";
-            echo "<input type='hidden' name='editar_idAtleta' value='{$fila['ID_Atleta1']}'>";
-            echo "<input type='hidden' name='nivel' value='$nivel'>"; // Pasar el nivel como campo oculto
-
-            // Mostrar los DNI de los 4 atletas
-            for ($i = 1; $i <= 4; $i++) {
-                $dniCampo = "DNI_Atleta$i";
-                echo "DNI Atleta $i: {$fila[$dniCampo]}<br>";
-            }
-
-            // Mostrar los campos a completar
-            echo "Resultado: <input type='text' name='Resultado' value='{$fila['Resultado']}' class='form-control mb-3'><br>";
-            echo "Lugar: <input type='text' name='Lugar' value='{$fila['Lugar']}' class='form-control mb-3'><br>";
-            echo "Serie: <input type='text' name='Serie' value='{$fila['Serie']}' class='form-control mb-3'><br>";
-            echo "Pista: <input type='text' name='Pista' value='{$fila['Pista']}' class='form-control mb-3'><br>";
-            echo "Nivel: <input type='text' name='Nivel' value='{$fila['Nivel']}' readonly class='form-control mb-3'><br>";
-
-            echo "<input type='submit' name='guardar_edicion' value='Guardar' class='btn btn-primary'>
-                </form>";
-
-            echo "</div>
-                </div>";
-        }
-        echo "</div>";
-    } else {
-        echo "<p>No hay datos en la tabla $tabla para el nivel seleccionado</p>";
-    }
-
-    echo "<script src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js'></script>
-    </body>
-    </html>";
-}
 ?>
+

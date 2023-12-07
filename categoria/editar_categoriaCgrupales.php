@@ -28,7 +28,7 @@ if ($conn->connect_error) {
 }
 
 // Función para agregar resultados de relevo 4x100 metros
-function agregarRelevo4x100Metros($dni1, $dni2, $dni3, $dni4, $nivel, $tabla) {
+function agregarRelevo4x100Metros($dni1, $dni2, $dni3, $dni4, $nivel, $tabla, $fechaCompetencia) {
     global $conn;
 
     // Buscar atletas por DNI en la tabla atletas
@@ -64,11 +64,11 @@ function agregarRelevo4x100Metros($dni1, $dni2, $dni3, $dni4, $nivel, $tabla) {
                 $query_insertar_resultado = "INSERT INTO $tabla (
                     ID_Atleta1, DNI_Atleta1, ID_Atleta2, DNI_Atleta2, 
                     ID_Atleta3, DNI_Atleta3, ID_Atleta4, DNI_Atleta4, 
-                    Resultado, Lugar, Serie, Pista, Nivel
+                    Resultado, Lugar, Serie, Pista, Nivel, fecha_competencia
                 ) VALUES (
                     '{$atletas[0]['id']}', '{$atletas[0]['dni']}', '{$atletas[1]['id']}', '{$atletas[1]['dni']}', 
                     '{$atletas[2]['id']}', '{$atletas[2]['dni']}', '{$atletas[3]['id']}', '{$atletas[3]['dni']}', 
-                    '0.0', 0, 0, '', '$nivel_atletas'
+                    '0.0', 0, 0, '', '$nivel_atletas', '$fechaCompetencia'
                 )";
 
                 $result_insertar_resultado = $conn->query($query_insertar_resultado);
@@ -110,16 +110,18 @@ function eliminarAtletasPorGrupo($dni, $nivel, $tabla) {
 
 
 // Verificar si se envió el formulario para agregar resultados de relevo 4x100 metros
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["dni1_4x100"]) && isset($_POST["dni2_4x100"]) && isset($_POST["dni3_4x100"]) && isset($_POST["dni4_4x100"]) && isset($_POST["nivel_4x100"])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["dni1_4x100"]) && isset($_POST["dni2_4x100"]) && isset($_POST["dni3_4x100"]) && isset($_POST["dni4_4x100"]) && isset($_POST["nivel_4x100"]) && isset($_POST["fecha_competencia"])) {
     $dni1_4x100_ingresado = $_POST["dni1_4x100"];
     $dni2_4x100_ingresado = $_POST["dni2_4x100"];
     $dni3_4x100_ingresado = $_POST["dni3_4x100"];
     $dni4_4x100_ingresado = $_POST["dni4_4x100"];
     $nivel_4x100_ingresado = $_POST["nivel_4x100"];
+    $fecha_competencia = $_POST["fecha_competencia"];
     $tabla_4x100_seleccionada = "resultados_relevo4x100metros_cc";
 
-    agregarRelevo4x100Metros($dni1_4x100_ingresado, $dni2_4x100_ingresado, $dni3_4x100_ingresado, $dni4_4x100_ingresado, $nivel_4x100_ingresado, $tabla_4x100_seleccionada);
+    agregarRelevo4x100Metros($dni1_4x100_ingresado, $dni2_4x100_ingresado, $dni3_4x100_ingresado, $dni4_4x100_ingresado, $nivel_4x100_ingresado, $tabla_4x100_seleccionada, $fecha_competencia);
 }
+
 
 // Verificar si se envió el formulario para eliminar atletas por grupo
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["dni_eliminar_grupo"]) && isset($_POST["nivel_eliminar_grupo"])) {
@@ -129,33 +131,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["dni_eliminar_grupo"]) 
 
     eliminarAtletasPorGrupo($dni_eliminar_grupo, $nivel_eliminar_grupo, $tabla_eliminar_grupo);
 }
-// Función para agregar resultados de Hexatlón
-function agregarResultadosHexatlon($dni, $nivel, $tabla) {
+function agregarResultadosHexatlon($dni, $nivel, $tabla, $fechaCompetencia) {
     global $conn;
 
     // Verificar si ya existen resultados para el atleta en el Hexatlón y nivel especificados
-    $query_verificar_resultados = "SELECT * FROM $tabla WHERE DNI_Atleta = '$dni' AND Nivel = '$nivel'";
+    $query_verificar_resultados = "SELECT * FROM $tabla WHERE DNI_Atleta = '$dni' AND Nivel = '$nivel' AND fecha_competencia = '$fechaCompetencia'";
     $result_verificar_resultados = $conn->query($query_verificar_resultados);
 
     if ($result_verificar_resultados && $result_verificar_resultados->num_rows == 0) {
         // Insertar nuevos resultados del Hexatlón en la tabla seleccionada
         $query_insertar_resultados = "INSERT INTO $tabla (
-            ID_Atleta, DNI_Atleta, Nivel
+            ID_Atleta, DNI_Atleta, Nivel, fecha_competencia
         ) VALUES (
-            NULL, '$dni', '$nivel'
+            NULL, '$dni', '$nivel', '$fechaCompetencia'
         )";
 
         $result_insertar_resultados = $conn->query($query_insertar_resultados);
 
         if ($result_insertar_resultados) {
-            echo "Se agregaron los resultados del Hexatlón para el DNI: $dni y Nivel: $nivel a la tabla $tabla.<br>";
+            echo "Se agregaron los resultados del Hexatlón para el DNI: $dni, Nivel: $nivel y Fecha de Competencia: $fechaCompetencia a la tabla $tabla.<br>";
         } else {
             echo "Error al agregar los resultados del Hexatlón: " . $conn->error . "<br>";
         }
     } else {
-        echo "Los resultados del Hexatlón ya existen para el DNI: $dni y Nivel: $nivel en la tabla $tabla.<br>";
+        echo "Los resultados del Hexatlón ya existen para el DNI: $dni, Nivel: $nivel y Fecha de Competencia: $fechaCompetencia en la tabla $tabla.<br>";
     }
 }
+
 
 // Función para eliminar resultados de Hexatlón por grupo (elimina todos los atletas del mismo nivel)
 function eliminarResultadosHexatlonPorGrupo($dni, $nivel, $tabla) {
@@ -173,13 +175,15 @@ function eliminarResultadosHexatlonPorGrupo($dni, $nivel, $tabla) {
 }
 
 // Verificar si se envió el formulario para agregar resultados de Hexatlón
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["dni_hexatlon"]) && isset($_POST["nivel_hexatlon"])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["dni_hexatlon"]) && isset($_POST["nivel_hexatlon"]) && isset($_POST["fecha_competencia"])) {
     $dni_hexatlon_ingresado = $_POST["dni_hexatlon"];
     $nivel_hexatlon_ingresado = $_POST["nivel_hexatlon"];
+    $fecha_competencia_ingresada = $_POST["fecha_competencia"];
     $tabla_hexatlon_seleccionada = "resultados_hexatlon_cc";
 
-    agregarResultadosHexatlon($dni_hexatlon_ingresado, $nivel_hexatlon_ingresado, $tabla_hexatlon_seleccionada);
+    agregarResultadosHexatlon($dni_hexatlon_ingresado, $nivel_hexatlon_ingresado, $tabla_hexatlon_seleccionada, $fecha_competencia_ingresada);
 }
+
 
 // Verificar si se envió el formulario para eliminar resultados de Hexatlón por grupo
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["dni_grupo_eliminar_hexatlon"]) && isset($_POST["nivel_grupo_eliminar_hexatlon"])) {
@@ -190,27 +194,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["dni_grupo_eliminar_hex
     eliminarResultadosHexatlonPorGrupo($dni_grupo_eliminar_hexatlon_ingresado, $nivel_grupo_eliminar_hexatlon_ingresado, $tabla_hexatlon_seleccionada);
 }
 // Función para agregar atletas de pentatlón
-function agregarAtletaPentatlon($dni, $nivel, $tabla) {
+function agregarResultadosPentatlon($dni, $nivel, $tabla, $fechaCompetencia) {
     global $conn;
 
-    // Verificar si ya existe el atleta en la tabla y nivel especificados
-    $query_verificar_atleta = "SELECT * FROM $tabla WHERE DNI_Atleta = '$dni' AND Nivel = '$nivel'";
-    $result_verificar_atleta = $conn->query($query_verificar_atleta);
+    // Verificar si ya existen resultados para el atleta en el Hexatlón y nivel especificados
+    $query_verificar_resultados = "SELECT * FROM $tabla WHERE DNI_Atleta = '$dni' AND Nivel = '$nivel' AND fecha_competencia = '$fechaCompetencia'";
+    $result_verificar_resultados = $conn->query($query_verificar_resultados);
 
-    if ($result_verificar_atleta && $result_verificar_atleta->num_rows == 0) {
-        // Insertar nuevo atleta en la tabla seleccionada
-        $query_insertar_atleta = "INSERT INTO $tabla (DNI_Atleta, Nivel) VALUES ('$dni', '$nivel')";
-        $result_insertar_atleta = $conn->query($query_insertar_atleta);
+    if ($result_verificar_resultados && $result_verificar_resultados->num_rows == 0) {
+        // Insertar nuevos resultados del Hexatlón en la tabla seleccionada
+        $query_insertar_resultados = "INSERT INTO $tabla (
+            ID_Atleta, DNI_Atleta, Nivel, fecha_competencia
+        ) VALUES (
+            NULL, '$dni', '$nivel', '$fechaCompetencia'
+        )";
 
-        if ($result_insertar_atleta) {
-            echo "Se agregó el atleta con DNI: $dni y Nivel: $nivel a la tabla $tabla.<br>";
+        $result_insertar_resultados = $conn->query($query_insertar_resultados);
+
+        if ($result_insertar_resultados) {
+            echo "Se agregaron los resultados del Hexatlón para el DNI: $dni, Nivel: $nivel y Fecha de Competencia: $fechaCompetencia a la tabla $tabla.<br>";
         } else {
-            echo "Error al agregar el atleta: " . $conn->error . "<br>";
+            echo "Error al agregar los resultados del Hexatlón: " . $conn->error . "<br>";
         }
     } else {
-        echo "El atleta ya existe en el nivel $nivel de la tabla $tabla.<br>";
+        echo "Los resultados del Hexatlón ya existen para el DNI: $dni, Nivel: $nivel y Fecha de Competencia: $fechaCompetencia en la tabla $tabla.<br>";
     }
 }
+
 
 // Función para eliminar atletas de pentatlón
 function eliminarAtletasPentatlon($dni, $nivel, $tabla) {
@@ -228,12 +238,13 @@ function eliminarAtletasPentatlon($dni, $nivel, $tabla) {
 }
 
 // Verificar si se envió el formulario para agregar atletas de pentatlón
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["dni_pentatlon"]) && isset($_POST["nivel_pentatlon"])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["dni_pentatlon"]) && isset($_POST["nivel_pentatlon"]) && isset($_POST["fecha_pentatlon"])) {
     $dni_pentatlon_ingresado = $_POST["dni_pentatlon"];
     $nivel_pentatlon_ingresado = $_POST["nivel_pentatlon"];
+    $fecha_pentatlon_ingresada = $_POST["fecha_pentatlon"];
     $tabla_pentatlon_seleccionada = "resultados_pentatlon_cc";
 
-    agregarAtletaPentatlon($dni_pentatlon_ingresado, $nivel_pentatlon_ingresado, $tabla_pentatlon_seleccionada);
+    agregarAtletaPentatlon($dni_pentatlon_ingresado, $nivel_pentatlon_ingresado, $tabla_pentatlon_seleccionada, $fecha_pentatlon_ingresada);
 }
 
 // Verificar si se envió el formulario para eliminar atletas de pentatlón
@@ -345,6 +356,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["dni_eliminar_pentatlon
                         <option value="REGIONAL">REGIONAL</option>
                     </select>
                 </div>
+<div class="form-group">
+<label for="fecha_competencia">Fecha de Competencia:</label>
+<input type="date" class="form-control" name="fecha_competencia" required>
+</div>
 
                 <button type="submit" class="btn btn-primary">Agregar Resultado</button>
             </form>
@@ -391,7 +406,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["dni_eliminar_pentatlon
                         <option value="REGIONAL">REGIONAL</option>
                     </select>
                 </div>
-
+    <div class="form-group">
+<label for="fecha_competencia">Fecha de Competencia:</label>
+<input type="date" class="form-control" name="fecha_competencia" required>
+</div>
                 <button type="submit" class="btn btn-primary">Agregar Resultado</button>
             </form>
         </div>
@@ -436,7 +454,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["dni_eliminar_pentatlon
                         <option value="REGIONAL">REGIONAL</option>
                     </select>
                 </div>
-
+                <div class="form-group">
+<label for="fecha_competencia">Fecha de Competencia:</label>
+<input type="date" class="form-control" name="fecha_competencia" required>
+</div>
                 <button type="submit" class="btn btn-primary">Agregar Atleta</button>
             </form>
 

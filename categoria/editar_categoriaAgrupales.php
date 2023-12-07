@@ -29,8 +29,8 @@ if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
-// Función para agregar atleta de relevo por DNI, nivel y tabla
-function agregarRelevo($dni1, $dni2, $dni3, $dni4, $nivel, $tabla) {
+// Función para agregar atleta de relevo por DNI, nivel, tabla y fecha de competencia
+function agregarRelevo($dni1, $dni2, $dni3, $dni4, $nivel, $tabla, $fecha_competencia) {
     global $conn;
 
     // Buscar atletas por DNI en la tabla atletas
@@ -62,15 +62,15 @@ function agregarRelevo($dni1, $dni2, $dni3, $dni4, $nivel, $tabla) {
             $result_verificar_relevo = $conn->query($query_verificar_relevo);
 
             if ($result_verificar_relevo && $result_verificar_relevo->num_rows == 0) {
-                // Insertar nuevo resultado de relevo en la tabla seleccionada
+                // Insertar nuevo resultado de relevo en la tabla seleccionada con la fecha de competencia
                 $query_insertar_resultado = "INSERT INTO $tabla (
                     ID_Atleta1, DNI_Atleta1, ID_Atleta2, DNI_Atleta2, 
                     ID_Atleta3, DNI_Atleta3, ID_Atleta4, DNI_Atleta4, 
-                    Resultado, Lugar, Serie, Pista, Nivel
+                    Resultado, Lugar, Serie, Pista, Nivel, Fecha_Competencia
                 ) VALUES (
                     '{$atletas[0]['id']}', '{$atletas[0]['dni']}', '{$atletas[1]['id']}', '{$atletas[1]['dni']}', 
                     '{$atletas[2]['id']}', '{$atletas[2]['dni']}', '{$atletas[3]['id']}', '{$atletas[3]['dni']}', 
-                    '0.0', 0, 0, '', '$nivel_atletas'
+                    '0.0', 0, 0, '', '$nivel_atletas', '$fecha_competencia'
                 )";
 
                 $result_insertar_resultado = $conn->query($query_insertar_resultado);
@@ -91,10 +91,8 @@ function agregarRelevo($dni1, $dni2, $dni3, $dni4, $nivel, $tabla) {
     }
 }
 
-
-
-// Función para agregar resultados de tetratlón por DNI, nivel y tabla
-function agregarTetratlon($dni, $nivel, $tabla) {
+// Función para agregar resultados de tetratlón por DNI, nivel, tabla y fecha de competencia
+function agregarTetratlon($dni, $nivel, $tabla, $fecha_competencia) {
     global $conn;
 
     // Verificar si el DNI ya existe en la tabla de resultados de tetratlón para el mismo nivel
@@ -114,11 +112,11 @@ function agregarTetratlon($dni, $nivel, $tabla) {
         $row_atleta = $result_buscar_atleta->fetch_assoc();
         $id_atleta = $row_atleta["id"];
 
-        // Insertar nuevo resultado de tetratlón en la tabla seleccionada
+        // Insertar nuevo resultado de tetratlón en la tabla seleccionada con la fecha de competencia
         $query_insertar_resultado = "INSERT INTO $tabla (
-            ID_Atleta, DNI_Atleta, Nivel
+            ID_Atleta, DNI_Atleta, Nivel, Fecha_Competencia
         ) VALUES (
-            '$id_atleta', '$dni', '$nivel'
+            '$id_atleta', '$dni', '$nivel', '$fecha_competencia'
         )";
 
         $result_insertar_resultado = $conn->query($query_insertar_resultado);
@@ -133,29 +131,28 @@ function agregarTetratlon($dni, $nivel, $tabla) {
     }
 }
 
-
-
 // ... (Otras funciones permanecen sin cambios)
 
 // Verificar si se envió el formulario para agregar resultados de relevo
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["dni1"]) && isset($_POST["dni2"]) && isset($_POST["dni3"]) && isset($_POST["dni4"]) && isset($_POST["nivel_relevo"]) && isset($_POST["tabla_relevo"])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["dni1"]) && isset($_POST["dni2"]) && isset($_POST["dni3"]) && isset($_POST["dni4"]) && isset($_POST["nivel_relevo"]) && isset($_POST["tabla_relevo"]) && isset($_POST["fecha_competencia"])) {
     $dni1_ingresado = $_POST["dni1"];
     $dni2_ingresado = $_POST["dni2"];
     $dni3_ingresado = $_POST["dni3"];
     $dni4_ingresado = $_POST["dni4"];
     $nivel_relevo_ingresado = $_POST["nivel_relevo"];
     $tabla_relevo_seleccionada = $_POST["tabla_relevo"];
+    $fecha_competencia = $_POST["fecha_competencia"];
 
-    agregarRelevo($dni1_ingresado, $dni2_ingresado, $dni3_ingresado, $dni4_ingresado, $nivel_relevo_ingresado, $tabla_relevo_seleccionada);
+    agregarRelevo($dni1_ingresado, $dni2_ingresado, $dni3_ingresado, $dni4_ingresado, $nivel_relevo_ingresado, $tabla_relevo_seleccionada, $fecha_competencia);
 }
-
 // Verificar si se envió el formulario para agregar resultados de tetratlón
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["dni_tetratlon"]) && isset($_POST["nivel_tetratlon"]) && isset($_POST["tabla_tetratlon"])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["dni_tetratlon"]) && isset($_POST["nivel_tetratlon"]) && isset($_POST["tabla_tetratlon"]) && isset($_POST["fecha_competencia_tetratlon"])) {
     $dni_tetratlon_ingresado = $_POST["dni_tetratlon"];
     $nivel_tetratlon_ingresado = $_POST["nivel_tetratlon"];
     $tabla_tetratlon_seleccionada = $_POST["tabla_tetratlon"];
+    $fecha_competencia_tetratlon = $_POST["fecha_competencia_tetratlon"];
 
-    agregarTetratlon($dni_tetratlon_ingresado, $nivel_tetratlon_ingresado, $tabla_tetratlon_seleccionada);
+    agregarTetratlon($dni_tetratlon_ingresado, $nivel_tetratlon_ingresado, $tabla_tetratlon_seleccionada, $fecha_competencia_tetratlon);
 }
 
 // Eliminar resultado de Relevo
@@ -435,7 +432,10 @@ window.onfocus = function() {
                         <!-- Agregar opciones para otras categorías de relevo si es necesario -->
                     </select>
                 </div>
-
+                <div class="col-md-3">
+    <label for="fecha_competencia_relevo">Fecha de Competencia:</label>
+    <input type="date" id="fecha_competencia_relevo" name="fecha_competencia" class="form-control" required>
+</div>
                 <div class="col-md-3">
                     <button type="submit" class="btn btn-primary mt-4">Agregar Relevo</button>
                 </div>
@@ -467,7 +467,10 @@ window.onfocus = function() {
                         <!-- Agregar más opciones según sea necesario -->
                     </select>
                 </div>
-
+                <div class="col-md-3">
+    <label for="fecha_competencia_tetratlon">Fecha de Competencia:</label>
+    <input type="date" id="fecha_competencia_tetratlon" name="fecha_competencia_tetratlon" class="form-control" required>
+</div>
                 <div class="col-md-3">
                     <button type="submit" class="btn btn-primary mt-4">Agregar Tetratlón</button>
                 </div>

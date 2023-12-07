@@ -56,9 +56,9 @@ function agregarAtleta($dni, $nivel, $tabla) {
             $nombre_atleta = $row_atleta["nombre"];
 
             // Insertar nuevo resultado en la tabla seleccionada
-            $query_insertar_resultado = "INSERT INTO $tabla (ID_Atleta, DNI_Atleta, Resultado, Lugar, Serie, Pista, Nivel)
-                                         VALUES ('$id_atleta', '$dni', 0.0, 0, 0, '', '$nivel')";
-            $result_insertar_resultado = $conn->query($query_insertar_resultado);
+            $query_insertar_resultado = "INSERT INTO $tabla (ID_Atleta, DNI_Atleta, Resultado, Lugar, Serie, Pista, Nivel, Fecha_Competencia)
+                                 VALUES ('$id_atleta', '$dni', 0.0, 0, 0, '', '$nivel', CURRENT_DATE)";
+    $result_insertar_resultado = $conn->query($query_insertar_resultado);
 
             if ($result_insertar_resultado) {
                 echo "Se agregó el atleta con ID: $id_atleta, Nombre: $nombre_atleta, DNI: $dni y Nivel: $nivel a la tabla $tabla.<br>";
@@ -87,6 +87,15 @@ function eliminarAtleta($dni, $tabla, $nivel) {
 
 
 // Función para mostrar resultados de una tabla filtrando por categoría
+// Verificar si se envió el formulario de mostrar resultados
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["tabla_mostrar"]) && isset($_POST["categoria_mostrar"])) {
+    // Obtener la tabla y la categoría a mostrar del formulario
+    $tabla_mostrar = $_POST["tabla_mostrar"];
+    $categoria_mostrar = $_POST["categoria_mostrar"];
+
+}
+
+// Función para mostrar resultados de una tabla filtrando por categoría
 function mostrarResultadosPorCategoria($tabla, $categoria) {
     global $conn;
 
@@ -95,13 +104,14 @@ function mostrarResultadosPorCategoria($tabla, $categoria) {
 
     if ($result_resultados) {
         if ($result_resultados->num_rows > 0) {
-            echo "<h2>Resultados de la tabla $tabla para la categoría $categoria</h2>";
-            echo "<table class='table'>
+            echo "<h2 class='mt-4'>Resultados de la tabla $tabla para la categoría $categoria</h2>";
+            echo "<div class='table-responsive'>";
+            echo "<table class='table table-striped table-bordered'>
                     <thead>
                         <tr>
-                            <th>ID_Atleta</th>
-                            <th>DNI_Atleta</th>
-                            <th>Nombre_Atleta</th>
+                            <th>ID Atleta</th>
+                            <th>DNI Atleta</th>
+                            <th>Nombre Atleta</th>
                             <th>Resultado</th>
                             <th>Lugar</th>
                             <th>Serie</th>
@@ -127,7 +137,7 @@ function mostrarResultadosPorCategoria($tabla, $categoria) {
                     $nombre_atleta = "Desconocido";
                 }
 
-                // Imprimir cada fila como una fila de la tabla
+                // Imprimir cada fila como una fila de la tabla con clases de Bootstrap
                 echo "<tr>
                         <td>" . $row["ID_Atleta"] . "</td>
                         <td>" . $dni_atleta . "</td>
@@ -141,11 +151,12 @@ function mostrarResultadosPorCategoria($tabla, $categoria) {
             }
 
             echo "</tbody></table>";
+            echo "</div>";
         } else {
-            echo "<p>No se encontraron resultados en la tabla $tabla para la categoría $categoria.</p>";
+            echo "<p class='mt-3'>No se encontraron resultados en la tabla $tabla para la categoría $categoria.</p>";
         }
     } else {
-        echo "<p>Error en la consulta: " . $conn->error . "</p>";
+        echo "<p class='mt-3'>Error en la consulta: " . $conn->error . "</p>";
     }
 }
 
@@ -156,6 +167,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["dni"]) && isset($_POST
     $dni_ingresado = $_POST["dni"];
     $nivel_ingresado = $_POST["nivel"];
     $tabla_seleccionada = $_POST["tabla"];
+    $fecha_competencia = $_POST["fecha"];
+
 
     // Llamar a la función para agregar atleta
     agregarAtleta($dni_ingresado, $nivel_ingresado, $tabla_seleccionada);
@@ -318,6 +331,10 @@ window.onfocus = function() {
                     <!-- ... (sigue con las opciones para las nuevas tablas) ... -->
                 </select>
             </div>
+            <div class="col-md-4">
+    <label for="fecha">Seleccione Fecha de Competencia:</label>
+    <input type="date" id="fecha" name="fecha" class="form-control" required>
+</div>
 
             <div class="col-md-4">
                 <button type="submit" class="btn btn-primary mt-4">Agregar Información</button>

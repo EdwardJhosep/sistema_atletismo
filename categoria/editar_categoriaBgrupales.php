@@ -28,7 +28,7 @@ if ($conn->connect_error) {
     die("Error en la conexión a la base de datos: " . $conn->connect_error);
 }
 
-function agregarAtletaPentatlon($dni, $nivel) {
+function agregarAtletaPentatlon($dni, $nivel, $fechaCompetencia = null) {
     global $conn;
 
     // Verificar si el DNI ya está registrado en DISTRITAL, PROVINCIAL o REGIONAL
@@ -51,12 +51,15 @@ function agregarAtletaPentatlon($dni, $nivel) {
                 $row_atleta = $result_buscar_atleta->fetch_assoc();
                 $id_atleta = $row_atleta["id"];
 
-                $query_insertar_resultado = "INSERT INTO Resultados_Pentatlon_CB (ID_Atleta, DNI_Atleta, 80mConVallas_Dia1, ImpulsionBala_Dia1, SaltoLargo_Dia1, SaltoAlto_Dia2, Distancia_600m_Dia2, Nivel)
-                                             VALUES ('$id_atleta', '$dni', 0.0, 0.0, 0.0, 0.0, 0.0, '$nivel')";
+                // Si no se proporciona una fecha de competencia, usa la fecha actual
+                $fechaCompetencia = $fechaCompetencia ? $fechaCompetencia : date("Y-m-d");
+
+                $query_insertar_resultado = "INSERT INTO Resultados_Pentatlon_CB (ID_Atleta, DNI_Atleta, 80mConVallas_Dia1, ImpulsionBala_Dia1, SaltoLargo_Dia1, SaltoAlto_Dia2, Distancia_600m_Dia2, Nivel, Fecha_Competencia)
+                                             VALUES ('$id_atleta', '$dni', 0.0, 0.0, 0.0, 0.0, 0.0, '$nivel', '$fechaCompetencia')";
                 $result_insertar_resultado = $conn->query($query_insertar_resultado);
 
                 if ($result_insertar_resultado) {
-                    echo "Se agregó el atleta con ID: $id_atleta, DNI: $dni y Nivel: $nivel a la tabla Resultados_Pentatlon_CB.<br>";
+                    echo "Se agregó el atleta con ID: $id_atleta, DNI: $dni, Nivel: $nivel y Fecha de Competencia: $fechaCompetencia a la tabla Resultados_Pentatlon_CB.<br>";
                 } else {
                     echo "Error al agregar el resultado: " . $conn->error . "<br>";
                 }
@@ -69,9 +72,8 @@ function agregarAtletaPentatlon($dni, $nivel) {
     }
 }
 
-
 // Función para agregar atleta a la tabla de Hexatlón
-function agregarAtletaHexatlon($dni, $nivel) {
+function agregarAtletaHexatlon($dni, $nivel, $fechaCompetencia = null) {
     global $conn;
 
     // Verificar si el DNI ya está registrado en DISTRITAL, PROVINCIAL o REGIONAL
@@ -94,8 +96,11 @@ function agregarAtletaHexatlon($dni, $nivel) {
                 $row_atleta = $result_buscar_atleta->fetch_assoc();
                 $id_atleta = $row_atleta["id"];
 
-                $query_insertar_resultado = "INSERT INTO Resultados_Hexatlon_CB (ID_Atleta, DNI_Atleta, 100mConVallas_Dia1, ImpulsionBala_Dia1, SaltoLargo_Dia1, LanzamientoJabalina_Dia2, SaltoAlto_Dia2, Distancia_800m_Dia2, Nivel)
-                                             VALUES ('$id_atleta', '$dni', 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, '$nivel')";
+                // Si no se proporciona una fecha de competencia, usa la fecha actual
+                $fechaCompetencia = $fechaCompetencia ? $fechaCompetencia : date("Y-m-d");
+
+                $query_insertar_resultado = "INSERT INTO Resultados_Hexatlon_CB (ID_Atleta, DNI_Atleta, 100mConVallas_Dia1, ImpulsionBala_Dia1, SaltoLargo_Dia1, LanzamientoJabalina_Dia2, SaltoAlto_Dia2, Distancia_800m_Dia2, Nivel, Fecha_Competencia)
+                                             VALUES ('$id_atleta', '$dni', 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, '$nivel', '$fechaCompetencia')";
                 $result_insertar_resultado = $conn->query($query_insertar_resultado);
 
                 if ($result_insertar_resultado) {
@@ -113,7 +118,7 @@ function agregarAtletaHexatlon($dni, $nivel) {
 }
 
 // Función para agregar equipo de relevo de 5 atletas por DNI, nivel y tabla
-function agregarEquipoRelevo5x80Metros($dni1, $dni2, $dni3, $dni4, $dni5, $nivel, $tabla) {
+function agregarEquipoRelevo5x80Metros($dni1, $dni2, $dni3, $dni4, $dni5, $nivel, $tabla, $fechaCompetencia = null) {
     global $conn;
 
     // Buscar atletas por DNI en la tabla atletas
@@ -145,21 +150,24 @@ function agregarEquipoRelevo5x80Metros($dni1, $dni2, $dni3, $dni4, $dni5, $nivel
             $result_verificar_relevo = $conn->query($query_verificar_relevo);
 
             if ($result_verificar_relevo && $result_verificar_relevo->num_rows == 0) {
+                // Si no se proporciona una fecha de competencia, usa la fecha actual
+                $fechaCompetencia = $fechaCompetencia ? $fechaCompetencia : date("Y-m-d");
+
                 // Insertar nuevo resultado de relevo en la tabla seleccionada
                 $query_insertar_resultado = "INSERT INTO $tabla (
                     ID_Atleta1, DNI_Atleta1, ID_Atleta2, DNI_Atleta2, 
                     ID_Atleta3, DNI_Atleta3, ID_Atleta4, DNI_Atleta4, 
-                    ID_Atleta5, DNI_Atleta5, Resultado, Lugar, Serie, Pista, Nivel
+                    ID_Atleta5, DNI_Atleta5, Resultado, Lugar, Serie, Pista, Nivel, Fecha_Competencia
                 ) VALUES (
                     '{$atletas[0]['id']}', '{$atletas[0]['dni']}', '{$atletas[1]['id']}', '{$atletas[1]['dni']}', 
                     '{$atletas[2]['id']}', '{$atletas[2]['dni']}', '{$atletas[3]['id']}', '{$atletas[3]['dni']}', 
-                    '{$atletas[4]['id']}', '{$atletas[4]['dni']}', '0.0', 0, 0, '', '$nivel_atletas'
+                    '{$atletas[4]['id']}', '{$atletas[4]['dni']}', '0.0', 0, 0, '', '$nivel_atletas', '$fechaCompetencia'
                 )";
 
                 $result_insertar_resultado = $conn->query($query_insertar_resultado);
 
                 if ($result_insertar_resultado) {
-                    echo "Se agregó el equipo de relevo con DNI: $dni1, $dni2, $dni3, $dni4, $dni5 y Nivel: $nivel_atletas a la tabla $tabla.<br>";
+                    echo "Se agregó el equipo de relevo con DNI: $dni1, $dni2, $dni3, $dni4, $dni5, Nivel: $nivel_atletas y Fecha de Competencia: $fechaCompetencia a la tabla $tabla.<br>";
                 } else {
                     echo "Error al agregar el equipo de relevo: " . $conn->error . "<br>";
                 }
@@ -413,7 +421,12 @@ label {
                 <input type="text" name="dni5" class="form-control">
             </div>
         </div>
-
+        <div class="form-row mt-3">
+    <div class="col-md-4">
+        <label for="fecha_competencia">Fecha de Competencia:</label>
+        <input type="date" name="fecha_competencia" class="form-control">
+    </div>
+</div>
         <div class="form-row mt-3">
             <div class="col">
                 <button type="submit" class="btn btn-primary">Agregar</button>
@@ -528,81 +541,82 @@ label {
     </form>
 
     <?php
-    function mostrarFila($row) {
-        echo "<tr>";
-        foreach ($row as $valor) {
-            echo "<td>$valor</td>";
-        }
-        echo "</tr>";
+function mostrarFila($row) {
+    echo "<tr>";
+    foreach ($row as $valor) {
+        echo "<td>$valor</td>";
     }
+    echo "</tr>";
+}
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["mostrar"])) {
-        $tabla_seleccionada = $_POST["tabla"];
-        $nivel_seleccionado = $_POST["nivel"];
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["mostrar"])) {
+    $tabla_seleccionada = $_POST["tabla"];
+    $nivel_seleccionado = $_POST["nivel"];
 
-        switch ($tabla_seleccionada) {
-            case "relevo":
-                $sql = "SELECT * FROM resultados_relevo5x80metros_cb WHERE Nivel = '$nivel_seleccionado'";
-                $result = $conn->query($sql);
+    switch ($tabla_seleccionada) {
+        case "relevo":
+            $sql = "SELECT * FROM resultados_relevo5x80metros_cb WHERE Nivel = '$nivel_seleccionado'";
+            $result = $conn->query($sql);
 
-                if ($result->num_rows > 0) {
-                    echo "<h2 class='mt-4'>Resultados Relevo ($nivel_seleccionado)</h2>";
-                    echo "<div class='table-responsive'>";
-                    echo "<table class='table table-bordered'>";
-                    echo "<thead class='thead-light'><tr><th>ID_Atleta1</th><th>DNI_Atleta1</th><th>ID_Atleta2</th><th>DNI_Atleta2</th><th>ID_Atleta3</th><th>DNI_Atleta3</th><th>ID_Atleta4</th><th>DNI_Atleta4</th><th>ID_Atleta5</th><th>DNI_Atleta5</th><th>Resultado</th><th>Lugar</th><th>Serie</th><th>Pista</th><th>Nivel</th></tr></thead><tbody>";
-                    while ($row = $result->fetch_assoc()) {
-                        mostrarFila($row);
-                    }
-                    echo "</tbody></table>";
-                    echo "</div>";
-                } else {
-                    echo "<p class='mt-3'>No hay resultados en el nivel $nivel_seleccionado.</p>";
+            if ($result->num_rows > 0) {
+                echo "<h2 class='mt-4'>Resultados Relevo ($nivel_seleccionado)</h2>";
+                echo "<div class='table-responsive'>";
+                echo "<table class='table table-bordered'>";
+                echo "<thead class='thead-light'><tr><th>ID_Atleta1</th><th>DNI_Atleta1</th><th>ID_Atleta2</th><th>DNI_Atleta2</th><th>ID_Atleta3</th><th>DNI_Atleta3</th><th>ID_Atleta4</th><th>DNI_Atleta4</th><th>ID_Atleta5</th><th>DNI_Atleta5</th><th>Resultado</th><th>Lugar</th><th>Serie</th><th>Pista</th><th>Nivel</th><th>Anio</th><th>Fecha_Registro</th><th>Fecha_Competencia</th></tr></thead><tbody>";
+                while ($row = $result->fetch_assoc()) {
+                    mostrarFila($row);
                 }
-                break;
+                echo "</tbody></table>";
+                echo "</div>";
+            } else {
+                echo "<p class='mt-3'>No hay resultados en el nivel $nivel_seleccionado.</p>";
+            }
+            break;
 
-            case "pentatlon":
-                $sql = "SELECT * FROM resultados_pentatlon_cb WHERE Nivel = '$nivel_seleccionado'";
-                $result = $conn->query($sql);
+        case "pentatlon":
+            $sql = "SELECT * FROM resultados_pentatlon_cb WHERE Nivel = '$nivel_seleccionado'";
+            $result = $conn->query($sql);
 
-                if ($result->num_rows > 0) {
-                    echo "<h2 class='mt-4'>Resultados Pentatlón ($nivel_seleccionado)</h2>";
-                    echo "<div class='table-responsive'>";
-                    echo "<table class='table table-bordered'>";
-                    echo "<thead class='thead-light'><tr><th>ID_Atleta</th><th>DNI_Atleta</th><th>80mConVallas_Dia1</th><th>ImpulsionBala_Dia1</th><th>SaltoLargo_Dia1</th><th>SaltoAlto_Dia2</th><th>Distancia_600m_Dia2</th><th>Nivel</th></tr></thead><tbody>";
-                    while ($row = $result->fetch_assoc()) {
-                        mostrarFila($row);
-                    }
-                    echo "</tbody></table>";
-                    echo "</div>";
-                } else {
-                    echo "<p class='mt-3'>No hay resultados en el nivel $nivel_seleccionado.</p>";
+            if ($result->num_rows > 0) {
+                echo "<h2 class='mt-4'>Resultados Pentatlón ($nivel_seleccionado)</h2>";
+                echo "<div class='table-responsive'>";
+                echo "<table class='table table-bordered'>";
+                echo "<thead class='thead-light'><tr><th>ID_Atleta</th><th>DNI_Atleta</th><th>80mConVallas_Dia1</th><th>ImpulsionBala_Dia1</th><th>SaltoLargo_Dia1</th><th>SaltoAlto_Dia2</th><th>Distancia_600m_Dia2</th><th>Nivel</th><th>Anio</th><th>Fecha_Registro</th><th>Fecha_Competencia</th></tr></thead><tbody>";
+                while ($row = $result->fetch_assoc()) {
+                    mostrarFila($row);
                 }
-                break;
+                echo "</tbody></table>";
+                echo "</div>";
+            } else {
+                echo "<p class='mt-3'>No hay resultados en el nivel $nivel_seleccionado.</p>";
+            }
+            break;
 
-            case "hexatlon":
-                $sql = "SELECT * FROM resultados_hexatlon_cb WHERE Nivel = '$nivel_seleccionado'";
-                $result = $conn->query($sql);
+        case "hexatlon":
+            $sql = "SELECT * FROM resultados_hexatlon_cb WHERE Nivel = '$nivel_seleccionado'";
+            $result = $conn->query($sql);
 
-                if ($result->num_rows > 0) {
-                    echo "<h2 class='mt-4'>Resultados Hexatlón ($nivel_seleccionado)</h2>";
-                    echo "<div class='table-responsive'>";
-                    echo "<table class='table table-bordered'>";
-                    echo "<thead class='thead-light'><tr><th>ID_Atleta</th><th>DNI_Atleta</th><th>100mConVallas_Dia1</th><th>ImpulsionBala_Dia1</th><th>SaltoLargo_Dia1</th><th>LanzamientoJabalina_Dia2</th><th>SaltoAlto_Dia2</th><th>Distancia_800m_Dia2</th><th>Nivel</th></tr></thead><tbody>";
-                    while ($row = $result->fetch_assoc()) {
-                        mostrarFila($row);
-                    }
-                    echo "</tbody></table>";
-                    echo "</div>";
-                } else {
-                    echo "<p class='mt-3'>No hay resultados en el nivel $nivel_seleccionado.</p>";
+            if ($result->num_rows > 0) {
+                echo "<h2 class='mt-4'>Resultados Hexatlón ($nivel_seleccionado)</h2>";
+                echo "<div class='table-responsive'>";
+                echo "<table class='table table-bordered'>";
+                echo "<thead class='thead-light'><tr><th>ID_Atleta</th><th>DNI_Atleta</th><th>100mConVallas_Dia1</th><th>ImpulsionBala_Dia1</th><th>SaltoLargo_Dia1</th><th>LanzamientoJabalina_Dia2</th><th>SaltoAlto_Dia2</th><th>Distancia_800m_Dia2</th><th>Nivel</th><th>Anio</th><th>Fecha_Registro</th><th>Fecha_Competencia</th></thead><tbody>";
+                while ($row = $result->fetch_assoc()) {
+                    mostrarFila($row);
                 }
-                break;
+                echo "</tbody></table>";
+                echo "</div>";
+            } else {
+                echo "<p class='mt-3'>No hay resultados en el nivel $nivel_seleccionado.</p>";
+            }
+            break;
 
-            default:
-                echo "<p class='mt-3'>Tabla no válida.</p>";
-        }
+        default:
+            echo "<p class='mt-3'>Tabla no válida.</p>";
     }
-    ?>
+}
+?>
+
 </div>
 
 <!-- Enlace a Bootstrap JS y jQuery (opcional) -->
